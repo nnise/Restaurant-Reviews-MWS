@@ -1,3 +1,8 @@
+  /* attribution   
+  https://developers.google.com/web/fundamentals/primers/service-workers/
+  */
+
+
 var CACHE_NAME = 'restaurants-reviews-v1';
 var urlsToCache = [
   '/',
