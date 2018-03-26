@@ -18,11 +18,12 @@
 
   <main id="maincontent">
     <section id="map-container">
-      <div id="map"></div>
+      <div id="map" role="application"></div>
     </section>
     <section id="list-container">
       <div class="filter-options">
         <h2>Filter Results</h2>
+        <label for="neighborhoods"></label>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>

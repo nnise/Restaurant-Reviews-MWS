@@ -75,11 +75,20 @@ window.initMap = () => {
     lat: 40.722216,
     lng: -73.987501
   };
-  self.map = new google.maps.Map(document.getElementById('map'), {
+  self.map = new google.maps.Map(document.getElementById('map'),{
     zoom: 12,
     center: loc,
     scrollwheel: false
   });
+
+/**
+ * Remove tabs in map links
+ */
+  google.maps.addListener(loc, 'tilesloaded', function(){
+  [].slice.apply(document.querySelectorAll('#map-container')).forEach(function(item) { 
+   item.setAttribute('tabindex','-1'); 
+  });
+})
   updateRestaurants();
 }
 
@@ -160,6 +169,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.setAttribute('aria-label', 'more about ' + restaurant.name);
   li.append(more)
 
   return li
