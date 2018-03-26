@@ -84,11 +84,11 @@ window.initMap = () => {
 /**
  * Remove tabs in map links
  */
-  google.maps.addListener(loc, 'tilesloaded', function(){
-  [].slice.apply(document.querySelectorAll('#map-container a')).forEach(function(item) { 
+  map.addListener('tilesloaded', function(){
+  document.querySelectorAll('#map-container a').forEach(function(item) { 
    item.setAttribute('tabindex','-1'); 
   });
-  })
+  });
   /**
  * Remove tabs in map links ends
  */
