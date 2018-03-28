@@ -100,10 +100,10 @@ window.initMap = () => {
  https://stackoverflow.com/questions/30531075/remove-the-tabindex-the-google-maps-in-my-page
  http://www.techstrikers.com/GoogleMap/Code/google-map-add-tilesloaded-event-Live_Demo.php
  */
-  map.addListener('tilesloaded', function(){
-  document.querySelectorAll('#map-container a').forEach(function(item) { 
-   item.setAttribute('tabindex','-1'); 
-  });
+  google.maps.event.addListener(map, "tilesloaded", function(){
+    var nodes = $('#map').find('*');
+    for(var i=0; i<nodes.length; i++){nodes[i].setAttribute('tabindex','-1'); 
+  }
   });
   /**
  * Remove tabs in map links ends
