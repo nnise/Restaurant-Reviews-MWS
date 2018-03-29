@@ -1,4 +1,4 @@
-var staticCacheName = 'restaurants-reviews-v1';
+var staticCacheName = 'restaurants-reviews-v2';
 var urlsToCache = [
   '/',
   '/index.html',
@@ -21,6 +21,25 @@ self.addEventListener('install', function(event) {
       })
   );
 });
+
+
+//Updates to the new service worker version
+self.addEventListener('activate', function(event){
+  event.waitUntil(
+    caches.keys().then(function(cacheNames){
+      return Promise.all(
+        cacheNames.filter(function(cacheName){
+        return cacheName.startsWith('restaurants-reviews-')&&
+                cacheName != staticCacheName;
+        }).map(function(cacheName){
+        return cache.delete(cacheName);
+        })
+      );
+    })
+  );
+});
+
+
 
 self.addEventListener('fetch', function(event) {
   console.log('test', event.request);
@@ -53,6 +72,6 @@ self.addEventListener('fetch', function(event) {
           }
         );
       })
-    );    
+    );
 });
 
