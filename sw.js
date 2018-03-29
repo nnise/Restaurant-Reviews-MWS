@@ -1,11 +1,8 @@
-  /* attribution   
-  https://developers.google.com/web/fundamentals/primers/service-workers/
-  */
-
-
-var CACHE_NAME = 'restaurants-reviews-v1';
+var staticCacheName = 'restaurants-reviews-v1';
 var urlsToCache = [
   '/',
+  '/index.html',
+  '/restaurant.html',
   '/css/styles.css',
   '/data/restaurants.json',
   '/img/',
@@ -17,7 +14,7 @@ var urlsToCache = [
 self.addEventListener('install', function(event) {
   // Perform install steps
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(staticCacheName)
       .then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
@@ -26,6 +23,7 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
+  console.log('test', event.request);
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
@@ -33,7 +31,6 @@ self.addEventListener('fetch', function(event) {
         if (response) {
           return response;
         }
-
         // Clone the request
         var fetchRequest = event.request.clone();
 
@@ -47,7 +44,7 @@ self.addEventListener('fetch', function(event) {
             //Clone the response
             var responseToCache = response.clone();
 
-            caches.open(CACHE_NAME)
+            caches.open(staticCacheName)
               .then(function(cache) {
                 cache.put(event.request, responseToCache);
               });
@@ -56,6 +53,6 @@ self.addEventListener('fetch', function(event) {
           }
         );
       })
-    );
+    );    
 });
 
