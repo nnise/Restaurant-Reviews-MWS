@@ -419,7 +419,7 @@ nav h1 a {
   }
 
 
-@media screen and (min-width: 710px) {
+@media screen and (min-width: 768px) {
 
  .inside #map-container, #map-container{
     height: 100vh;
@@ -437,8 +437,9 @@ nav h1 a {
     width: calc(60% - 4em);
     padding: 0.5em 2em;
   }
+
   #reviews-container{
-    width: 100%
+    width: 100%;
   }
 
   #restaurants-list {
@@ -454,7 +455,7 @@ nav h1 a {
     margin: 5px;
     text-align: left;
     width: calc(50% - 10px);
-    height: 280px;
+    min-height: 280px;
     overflow: hidden;
   }
 
@@ -469,14 +470,15 @@ nav h1 a {
   }  
 
   #restaurants-list li h2 {
-    font-size: 1em;
+    font-size: 1.5em;
     padding: 0 5px 5px;
-    max-height: 39px;
+    height: 40px;
     margin: 5px 0 5px;
   }
 
   #restaurants-list p {
     padding: 0 5px 5px;
+    height: 35px;
   }
   
   #restaurants-list li a {
@@ -484,11 +486,24 @@ nav h1 a {
   }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1024px) {
+
+  .inside #map-container, #map-container{
+    height: 100vh;
+    width: 30%;
+  }
+  
+  #list-container{
+    width: 70%;
+    height: 100vh;
+  }
 
   #restaurant-container {
     height: 800px;
     overflow: scroll;
+    width: calc(35% - 5em);
+    padding: 0.5em 3em;
+    border-bottom: 0px;
 }
   #restaurants-list {
     padding: 0;
@@ -502,10 +517,29 @@ nav h1 a {
     height: 50px;
     text-align: left;
     width: calc(33% - 10px);
-    min-height: 310px;
+    min-height: 365px;
+  }
+
+  #restaurants-list p {
+    padding: 0 5px 5px;
+    height: 20px;
   }
   #restaurants-list .restaurant-img {
     width: 100%;
     border-radius: 20px 0px 0px 0px;
   }
-}
+
+  #reviews-container{
+    padding: 2em;
+    width: calc(35% - 7em);
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+    overflow-y: scroll;
+  }
+
+  #reviews-container h2 {
+    font-size: 12pt;
+    text-transform: uppercase;
+  }
