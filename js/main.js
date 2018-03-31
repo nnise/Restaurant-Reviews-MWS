@@ -8,15 +8,15 @@ var markers = []
  * register service worker
  */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(function(registration) {
+  navigator.serviceWorker.register('../sw.js')
+    .then(function(registration) {
       // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
+      console.log('Service Worker registration successful with scope: ', registration.scope);
+    })
+    .catch(function(err) {
       // registration failed :(
       console.log('ServiceWorker registration failed: ', err);
     });
-  });
 }
 
 /**
@@ -171,8 +171,8 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.setAttribute('aria-label', 'restaurant:' + restaurant.name);
-  image.setAttribute('alt', restaurant.name);
+  image.setAttribute('aria-label', 'restaurant: ' + restaurant.name);
+  image.setAttribute('alt', 'Photo of ' + restaurant.name + ' in ' + restaurant.neighborhood);
 
   li.append(image);
 

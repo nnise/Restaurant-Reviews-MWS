@@ -2,6 +2,23 @@ let restaurant;
 var map;
 
 /**
+ * register service worker
+ */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('../sw.js')
+    .then(function(registration) {
+      // Registration was successful
+      console.log('Service Worker registration successful with scope: ', registration.scope);
+    })
+    .catch(function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+}
+
+/**
+
+/**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
@@ -58,7 +75,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.setAttribute('alt', restaurant.name);
+  image.setAttribute('alt', 'Photo of ' + restaurant.name + ' restaurant');
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
