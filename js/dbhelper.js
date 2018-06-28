@@ -8,15 +8,32 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 8000 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/restaurants`;
   }
 
   /**
    * Fetch all restaurants.
    */
-  static fetchRestaurants(callback) {
-    let xhr = new XMLHttpRequest();
+  static fetchRestaurants(callback, id) {
+    let fetchURL;
+    if (!id){
+      fetchURL = DBHelper.DATABASE_URL;
+    } else {
+      fetchURL = DBHelper.DATABASE_URL + '/' + id;
+    }
+    fetch(fetchURL, { method: 'GET'})
+      .then(
+        function(response) {
+        response.json().then(function(restaurants) {
+          callback(null, restaurants);
+        });
+      }
+    )
+    .catch(function(err) {
+      console.log('Fetch Error :-S', err);
+  });
+    /*let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
@@ -29,6 +46,7 @@ class DBHelper {
       }
     };
     xhr.send();
+    */
   }
 
   /**
@@ -40,14 +58,15 @@ class DBHelper {
       if (error) {
         callback(error, null);
       } else {
-        const restaurant = restaurants.find(r => r.id == id);
+        //const restaurant = restaurants.find(r => r.id == id);
+        const restaurant = restaurants;
         if (restaurant) { // Got the restaurant
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
         }
       }
-    });
+    }, id);
   }
 
   /**
