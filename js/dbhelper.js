@@ -53,13 +53,20 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
+    //DBHelper.fetchRestaurants()
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
+<<<<<<< HEAD
         //const restaurant = restaurants.find(r => r.id == id);
         const restaurant = restaurants;
+||||||| merged common ancestors
+        const restaurant = restaurants.find(r => r.id == id);
+=======
+        //const restaurant = restaurants.find(r => r.id == id);
+>>>>>>> c571068d2addb4b231ce642fd1ad606fc0a8efe7
         if (restaurant) { // Got the restaurant
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
