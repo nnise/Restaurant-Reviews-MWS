@@ -32,41 +32,20 @@ class DBHelper {
     )
     .catch(function(err) {
       console.log('Fetch Error :-S', err);
-  });
-    /*let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
-        callback(null, restaurants);
-      } else { // Oops!. Got an error from server.
-        const error = (`Request failed. Returned status of ${xhr.status}`);
-        callback(error, null);
-      }
-    };
-    xhr.send();
-    */
+    });
+
   }
 
   /**
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
-    //DBHelper.fetchRestaurants()
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
-<<<<<<< HEAD
-        //const restaurant = restaurants.find(r => r.id == id);
         const restaurant = restaurants;
-||||||| merged common ancestors
-        const restaurant = restaurants.find(r => r.id == id);
-=======
-        //const restaurant = restaurants.find(r => r.id == id);
->>>>>>> c571068d2addb4b231ce642fd1ad606fc0a8efe7
         if (restaurant) { // Got the restaurant
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
