@@ -1,4 +1,6 @@
-importScripts('js/idb.js');
+importScripts('/js/idb.js');
+ 
+
 
 var staticCacheName = 'restaurants-reviews-v3';
 var filesToCache = [
