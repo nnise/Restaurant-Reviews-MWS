@@ -1,3 +1,5 @@
+const dbPromise = DBHelper.openDatabase();
+
 /**
  * Common database helper functions.
  */
@@ -10,6 +12,19 @@ class DBHelper {
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
     return `http://localhost:${port}/restaurants`;
+  }
+
+  /**
+   * Creating the database with the IndexedDB Api.
+   */
+  static openDatabase() {
+    if (!navigator.serviceWorker) {
+      return Promise.resolve();
+    }
+  
+    return idb.open('restaurant-reviews-dtbs', 3, upgradeDB =>  {
+    var store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
+      store.createIndex('by-id', 'id');
   }
 
   /**
