@@ -1,14 +1,3 @@
-/**
- * creates the database
- */
-var dbPromise = idb.open('myIdb', 2, function(upgradeDb) {
-   var dbStore = upgradeDb.createObjectStore('dbStoreKey');
-   dbStore.put('mykey', 'myvalue');
-});
-
-
-////test ends////*/
-
 let restaurants,
   neighborhoods,
   cuisines
