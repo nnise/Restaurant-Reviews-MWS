@@ -1,3 +1,6 @@
+const dbPromise = DBHelper.openDatabase();
+
+
 let restaurants,
   neighborhoods,
   cuisines

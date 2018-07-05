@@ -1,13 +1,10 @@
-const dbPromise = DBHelper.openDatabase();
-
 /**
  * Common database helper functions.
  */
 class DBHelper {
 
   /**
-   * Database URL.
-   * Change this to restaurants.json file location on your server.
+   * Database URL. Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
