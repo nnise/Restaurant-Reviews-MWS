@@ -4,14 +4,6 @@
 class DBHelper {
 
   /**
-   * Database URL. Change this to restaurants.json file location on your server.
-   */
-  static get DATABASE_URL() {
-    const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
-  }
-
-  /**
    * Creating the database with the IndexedDB Api.
    */
   static openDatabase() {
@@ -19,11 +11,24 @@ class DBHelper {
       return Promise.resolve();
     }
   
-    return idb.open('restaurant-reviews-dtbs', 3, upgradeDB =>  {
-    var store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
-      store.createIndex('by-id', 'id');
-  });
+    return idb.open('restaurant-reviews-dtbs', 3, function(upgradeDB)  {
+    var store = upgradeDB.createObjectStore('restaurants', {keyPath: 'id'});
+    store.createIndex('by-id', 'id');
+    });
+    idb.onupgradeneeded = function(event) {
+    var db = this.result;
+
+  }}
+
+  /**
+   * Database URL. Change this to restaurants.json file location on your server.
+   */
+  static get DATABASE_URL() {
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/restaurants`;
   }
+
+  
 
   /**
    * Fetch all restaurants.
