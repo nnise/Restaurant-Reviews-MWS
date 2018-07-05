@@ -25,6 +25,7 @@ class DBHelper {
     return idb.open('restaurant-reviews-dtbs', 3, upgradeDB =>  {
     var store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
       store.createIndex('by-id', 'id');
+  });
   }
 
   /**
