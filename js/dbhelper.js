@@ -1,68 +1,75 @@
-/**
- * Common database helper functions.
- */
-class DBHelper {
+const altTags = {
+  1:"groups of people gathering, chatting and drinking around tables",
+  2:"rounded Marguerita Pizza",
+  3:"wood tables and chairs in an empty interior area with metal ceiling",
+  4:"exterior of a street corner at night with neon lights" ,
+  5:"kitchen open and informal atmosphere where cooks and clients have direct contact",
+  6:"old fabric look space with drop-down chairs and tables",
+  7:"black and white photograph with the name of the restaurant in stencil",
+  8:"tree and facade with the nameof the restaurant in white over blue",
+  9:"people sitted to a table eating and interacting with mobile",
+  10:"empty espace in cold colors with a metal bar surrounded by white chairs"
+}
 
-  /**
-   * Creating the database with the IndexedDB Api.
-   */
-  static openDatabase() {
-    if (!navigator.serviceWorker) {
-      return Promise.resolve();
-    }
-  
-    if (!('indexedDB' in window)) {
-    console.log('This browser doesn\'t support IndexedDB');
-    return;
-    }
-
-
-    return idb.open('restaurant-reviews-dtbs', 10, upgradeDB =>  {
-    var store = upgradeDB.createObjectStore('restaurants', {keyPath: 'id'});
-    var store = upgradeDB.createObjectStore('reviews', {keyPath: 'id'});
-    //store.createIndex('by-id', 'id');
-    });
-    idb.onupgradeneeded = function(event) {
-    var db = this.result;
-
-    }
-
-  };
-
-  /**
-   * Database URL. Change this to restaurants.json file location on your server.
-   */
-  static get DATABASE_URL() {
-    const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
+  if (!navigator.serviceWorker) {
+    return Promise.resolve();
   }
 
-  
+  if (!("indexedDB" in window)) {
+  console.log("This browser doesn\"t support IndexedDB");
+  return;
+  }
+
+  // checks if the objectStore already exists and updates it
+  if(!upgradeDb.objectStoreNames.contains('restaurants')){
+  const store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
+  store.createIndex('id', 'id', {unique: true}); 
+  }
+}); 
+
+class DBHelper {
+  /**
+   * Database URL.
+   * Change this to restaurants.json file location on your server.
+   */
+  static get DATABASE_URL() {
+    const port = 1337; // Change this to your server port
+    return `http://localhost:${port}/restaurants`;
+  }
 
   /**
    * Fetch all restaurants.
    */
-  static fetchRestaurants(callback, id) {
-    let fetchURL;
-    if (!id){
-      fetchURL = DBHelper.DATABASE_URL;
-    } else {
-      fetchURL = DBHelper.DATABASE_URL + '/' + id;
+  static fetchRestaurants(callback) {
+      dbPromise.then((db) => {
+        const tx = db.transaction('restaurants', 'readwrite');
+        const restaurantsStore = tx.objectStore('restaurants');
+        return restaurantsStore.getAll()
+      }).then((restaurants) => {
+        if(restaurants.length) {
+          callback(null,restaurants) 
+        } else {
+          fetch(`${DBHelper.DATABASE_URL}/restaurants`)
+          .then((rest) => {
+            return rest.json();
+          }).then((rest) => {
+            const restaurants = rest;
+            restaurants.forEach((restaurant,index) => {
+              if(restaurant.id) {
+                restaurant.alt = altTags[restaurant.id]
+              }
+            })
+            dbPromise.then((db) => {
+              const tx = db.transaction('restaurants', 'readwrite');
+              const restaurantsStore = tx.objectStore('restaurants');
+              restaurants.forEach(restaurant=>restaurantsStore.put(restaurant))
+            })
+            callback(null,restaurants);
+          })
+        }
+      })
     }
-    fetch(fetchURL, { method: 'GET'})
-      .then(
-        function(response) {
-        response.json().then(function(restaurants) {
-          callback(null, restaurants);
-        });
-      }
-    )
-    .catch(function(err) {
-      console.log('Fetch Error :-S', err);
-    });
-
-  }
-
   /**
    * Fetch a restaurant by its ID.
    */
@@ -72,7 +79,7 @@ class DBHelper {
       if (error) {
         callback(error, null);
       } else {
-        const restaurant = restaurants;
+        const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) { // Got the restaurant
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
