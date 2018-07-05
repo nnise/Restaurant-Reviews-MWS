@@ -11,14 +11,23 @@ class DBHelper {
       return Promise.resolve();
     }
   
-    return idb.open('restaurant-reviews-dtbs', 3, function(upgradeDB)  {
+    if (!('indexedDB' in window)) {
+    console.log('This browser doesn\'t support IndexedDB');
+    return;
+    }
+
+
+    return idb.open('restaurant-reviews-dtbs', 10, upgradeDB =>  {
     var store = upgradeDB.createObjectStore('restaurants', {keyPath: 'id'});
-    store.createIndex('by-id', 'id');
+    var store = upgradeDB.createObjectStore('reviews', {keyPath: 'id'});
+    //store.createIndex('by-id', 'id');
     });
     idb.onupgradeneeded = function(event) {
     var db = this.result;
 
-  }}
+    }
+
+  };
 
   /**
    * Database URL. Change this to restaurants.json file location on your server.

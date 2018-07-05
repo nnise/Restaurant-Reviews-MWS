@@ -8,6 +8,46 @@ var map
 var markers = []
 
 /**
+ * Write restaurants data to objectStore 'restaurants'
+ */
+
+function addRestaurantsToDatabase(restaurants) {
+  return dbPromise.then(db => {
+    const tx = db.transaction('restaurants', 'readwrite');
+    const store = tx.objectStore('restaurants');
+    // Don't use Promise.all when there's only one restaurant.
+    if (restaurants.length > 1) {
+      return Promise.all(restaurants.map(restaurant => store.put(restaurant)))
+      .catch(() => {
+        tx.abort();
+        throw Error('[ERROR] Restaurants were not added to the store.');
+      });
+    } else {
+      store.put(restaurants);
+    }
+  });
+}
+
+// Get restaurants data from object store restaurants.
+function getLocalRestaurantsData() {
+  return dbPromise.then(db => {
+    const tx = db.transaction('restaurants', 'readonly');
+    const store = tx.objectStore('restaurants');
+    return store.getAll();
+  });
+}
+
+// Get restaurant by id data from object store restaurants.
+function getLocalRestaurantByIdData(id) {
+  return dbPromise.then(db => {
+    const tx = db.transaction('restaurants', 'readonly');
+    const store = tx.objectStore('restaurants');
+    // Make sure you're using a number for id.
+    return store.get(parseInt(id));
+  });
+}
+
+/**
  * register service worker
  */
 if ('serviceWorker' in navigator) {
