@@ -19,6 +19,13 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-imagemin": "^4.1.0",
-    "gulp-webp": "^3.0.0"
+    "gulp-webp": "^3.0.0",
+    "run-sequence": "^2.2.1",
+    "workbox-build": "^3.4.1"
+  },
+  "dependencies": {
+    "del": "^3.0.0",
+    "file-system": "^2.2.2",
+    "npm": "^6.1.0"
   }
 }

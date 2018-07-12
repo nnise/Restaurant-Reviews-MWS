@@ -5,11 +5,23 @@ var map
 var markers = []
 
 
+/**if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log(`Service Worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service Worker registration failed: ${err}`);
+      });
+  });
+}
+*/
+
 /**
  * register service worker
- */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('../src/sw.js')
+  navigator.serviceWorker.register('../sw.js')
     .then(function(registration) {
       // Registration was successful
       console.log('Service Worker registration successful with scope: ', registration.scope);
@@ -19,6 +31,8 @@ if ('serviceWorker' in navigator) {
       console.log('ServiceWorker registration failed: ', err);
     });
 }
+ */
+
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.

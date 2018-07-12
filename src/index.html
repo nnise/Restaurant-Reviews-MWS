@@ -42,6 +42,20 @@
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+<!-- Service Worker registration-->
+  <script>
+ if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log(`Service Worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service Worker registration failed: ${err}`);
+      });
+  });
+}
+  </script>
  
 
   <!-- Google Maps -->
