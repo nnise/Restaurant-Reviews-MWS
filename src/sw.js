@@ -1,3 +1,6 @@
+console.log('Hello from sw.js');
+
+
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox-sw.js');
 
 if (workbox) {
@@ -7,8 +10,8 @@ if (workbox) {
   console.log(`Boo! Workbox didn't load 😬`);
 }
 
-/*
 
+/*
 
 var staticCacheName = 'restaurants-reviews-v3';
 var filesToCache = [
@@ -84,4 +87,5 @@ self.addEventListener('fetch', function(event) {
       })
     );
 });
+*/
 

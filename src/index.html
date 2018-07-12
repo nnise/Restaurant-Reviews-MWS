@@ -43,19 +43,15 @@
   <!-- Main javascript file -->
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
 <!-- Service Worker registration-->
-  <script>
- if ('serviceWorker' in navigator) {
+ <script>
+// Check that service workers are registered https://developers.google.com/web/tools/workbox/guides/get-started
+if ('serviceWorker' in navigator) {
+  // Use the window load event to keep the page load performant
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log(`Service Worker registered! Scope: ${registration.scope}`);
-      })
-      .catch(err => {
-        console.log(`Service Worker registration failed: ${err}`);
-      });
+    navigator.serviceWorker.register('sw.js');
   });
 }
-  </script>
+</script>
  
 
   <!-- Google Maps -->
