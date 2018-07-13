@@ -78,7 +78,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/restaurant_info.js",
-    "revision": "39a0177cb6de6d094b1a0fd6b384574e"
+    "revision": "be5e15b392108cf0940252eda2680cdd"
   },
   {
     "url": "restaurant.html",
