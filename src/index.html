@@ -13,13 +13,14 @@
   <header>
     <div id="skip"><a href="#list-container" class>Skip to Main Content</a></div>
     <nav role="navigation">
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1><a href="/src/">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
   <main id="maincontent">
+    <button id="mapButton" name="show map" aria-label="show Google maps">Show me the map</button>
     <section id="map-container">
-      <div id="map" role="application" tabindex="-1"></div>
+      <div id="map" role="application" tabindex="-1" aria-label="Map of restaurants" aria-label="map"></div>
     </section>
     <section id="list-container">
       <div class="filter-options">
@@ -42,17 +43,7 @@
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
-<!-- Service Worker registration-->
- <script>
-// Check that service workers are registered https://developers.google.com/web/tools/workbox/guides/get-started
-if ('serviceWorker' in navigator) {
-  // Use the window load event to keep the page load performant
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js');
-  });
-}
-</script>
- 
+
 
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzBZiYt4E4ig9IEPIkvnG663D6DsSfUIE&libraries=places&callback=initMap"></script>

@@ -11,6 +11,10 @@ const altTags = {
   10:"empty espace in cold colors with a metal bar surrounded by white chairs"
 }
 
+
+  /**
+   * Open a database using IndexedDB
+   */
 const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   if (!navigator.serviceWorker) {
     return Promise.resolve();
@@ -27,6 +31,7 @@ const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   store.createIndex('id', 'id', {unique: true}); 
   }
 }); 
+
 
 class DBHelper {
   /**
@@ -86,7 +91,7 @@ class DBHelper {
           callback('Restaurant does not exist', null);
         }
       }
-    }, id);
+    });
   }
 
   /**

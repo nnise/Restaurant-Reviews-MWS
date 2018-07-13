@@ -5,9 +5,13 @@ var map
 var markers = []
 
 
-/**if ('serviceWorker' in navigator) {
+
+/**
+ * register service worker
+**/
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('sw.js')
       .then(registration => {
         console.log(`Service Worker registered! Scope: ${registration.scope}`);
       })
@@ -16,22 +20,6 @@ var markers = []
       });
   });
 }
-*/
-
-/**
- * register service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('../sw.js')
-    .then(function(registration) {
-      // Registration was successful
-      console.log('Service Worker registration successful with scope: ', registration.scope);
-    })
-    .catch(function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-}
- */
 
 
 /**
@@ -127,6 +115,12 @@ window.initMap = () => {
  */
   updateRestaurants();
 }
+  /**
+ * A button to make the map optional and improve performance
+ */
+  document.getElementById('mapButton').addEventListener('click', () => {
+  document.getElementById('map').className = 'open';
+  });
 
 /**
  * Update page and map for current restaurants.

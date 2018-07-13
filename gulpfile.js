@@ -44,7 +44,7 @@ gulp.task('formatWebP', () =>
 // * build-scripts and build-styles in parallel
 // * build-html
 // * Finally call the callback function
-gulp.task('build', function(callback) {
+/*gulp.task('build', function(callback) {
   runSequence('build-clean',
               ['build-scripts',],
               'build-html',
@@ -78,22 +78,23 @@ gulp.task('callback-example', function(callback) {
 //       This is what lets gulp know this task is complete!
     });
 });
-
+*/
 
 
 // Building the production service worker https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#3
 gulp.task('service-worker', () => {
   return workboxBuild.injectManifest({
-    swSrc: 'app/sw.js',
-    swDest: 'build/sw.js',
-    globDirectory: 'build',
+    swSrc: 'src/sw.js',
+    swDest: 'dist/sw.js',
+    globDirectory: 'dist',
     globPatterns: [
-      'css/styles.css',
-      'index.html',
-      'js/idb.js',
-      'js/main.js',
-      'img/**/*.*',
+      '**\/*.{html,css,js,webp}',
+      'img/touch/*.png',
       'manifest.json'
+    ],
+    globIgnores: [
+      'workbox-config.js',
+      'node_modules/**/*'
     ]
   }).catch(err => {
     console.log('[ERROR]: ' + err);
