@@ -1,152 +1,87 @@
-console.log('Hello from sw.js');
-
-// Importing Workbox https://developers.google.com/web/tools/workbox/guides/get-started
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.3.1/workbox-sw.js');
-
-if (workbox) {
-  console.log(`Yay! Workbox is loaded 🎉`);
-
-  workbox.core.setCacheNameDetails({
-    prefix: 'rr-',
-    suffix: 'v1'
-  });
-
-  workbox.precaching.precacheAndRoute([]);
-} else {
-  console.log(`Boo! Workbox didn't load 😬`);
-}
-
-//Add a cache fallback to the JavaScript files.
-workbox.routing.registerRoute(
-  new RegExp('.*\.js'),
-  workbox.strategies.networkFirst()
-);
-
-
-// Workbox caching strategies
-workbox.routing.registerRoute(
-  // Cache CSS files
-  /.*\.css/,
-  // Use cache but update in the background ASAP
-  workbox.strategies.staleWhileRevalidate({
-    // Use a custom cache name
-    cacheName: 'rr-css-cache',
-  })
-);
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js');
 
 workbox.routing.registerRoute(
-  // Cache image files
-  /.*\.(?:png|jpg|jpeg|svg|gif|webp)/,
-  // Use the cache if it's available
-  workbox.strategies.cacheFirst({
-    // Use a custom cache name
-    cacheName: 'rr-image-cache',
-    plugins: [
-      new workbox.expiration.Plugin({
-        // Cache only 20 images
-        maxEntries: 20,
-        // Cache for a maximum of a week
-        maxAgeSeconds: 7 * 24 * 60 * 60,
-      })
-    ],
-  })
-);
-
-
-
-// Status 0 response you would for a cross-origin resource request
-      // and the server called is not configured to serve cross-origin resources.
- workbox.routing.registerRoute(
     new RegExp('restaurant.html(.*)'),
     workbox.strategies.networkFirst({
-      cacheName: 'rr-cache-restaurant',
+      cacheName: 'cache-restaurant-details',
       cacheableResponse: {statuses: [0, 200]}
     })
   );
 
 workbox.routing.registerRoute(
   new RegExp('index.html(.*)'),
-  workbox.strategies.networkFirst({
-    cacheName: 'rr-cache-index',
+  workbox.strategies.cacheFirst({
+    cacheName: 'cache-index.html',
     cacheableResponse: {statuses: [0, 200]}
   })
 );
-
-/*
-var staticCacheName = 'restaurants-reviews-v3';
-var filesToCache = [
-  '.',
-  'index.html',
-  'restaurant.html',
-  'css/styles.css',
-  'data/restaurants.json',
-  'img/',
-  'js/dbhelper.js',
-  'js/main.js',
-  'js/restaurant_info.js',
-  'pages/404.html',
-  'pages/offline.html'
-];
-
-self.addEventListener('install', function(event) {
-  console.log('Attempting to install service worker and cache static assets');
-  // Perform install steps
-  event.waitUntil(
-    caches.open(staticCacheName)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(filesToCache);
-      })
-  );
-});
-
-
-//Updates to the new service worker version
-self.addEventListener('activate', function(event){
-  event.waitUntil(
-    caches.keys().then(function(cacheNames){
-      return Promise.all(
-        cacheNames.filter(function(cacheName){
-        return cacheName.startsWith('restaurants-reviews-')&&
-                cacheName != staticCacheName;
-        }).map(function(cacheName){
-        return cache.delete(cacheName);
-        })
-      );
-    })
-  );
-});
-
-
-*/
-/*
-self.addEventListener('fetch', function(event) {
-  console.log('Fetch event for ', event.request.url);
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          console.log('Found ', event.request.url, ' in cache');
-          return response;
-        }
-        console.log('Network request for ', event.request.url);
-        return fetch(event.request).then(function(response){
-        // Respond with custom 404 page
-          if (response.status === 404){
-            return caches.match ('pages/404.html');
-          }
-        //Add fetched files to the cache
-          return caches.open(staticCacheName).then(function(cache){
-              cache.put(event.request.url, response.clone());
-              return response;
-          });
-        });
-      }).catch(function(error){
-        console.log('Error, ', error);
-        return caches.match('pages/offline.html');
-      })
-    );
-});
-
-*/
+workbox.precaching.precacheAndRoute([
+  {
+    "url": "css/styles.css",
+    "revision": "2e708cbb2bb00cf2a5a7e61004d5fff7"
+  },
+  {
+    "url": "img/1.webp",
+    "revision": "a03796419758ab3c530b237f3234ccf7"
+  },
+  {
+    "url": "img/10.webp",
+    "revision": "85dcd06ba7bd61700cd20dde8dc7a5d9"
+  },
+  {
+    "url": "img/2.webp",
+    "revision": "a63d98048f9d6a220f08cc16c69da296"
+  },
+  {
+    "url": "img/3.webp",
+    "revision": "2bb2b423876087794ac217330ad24c0e"
+  },
+  {
+    "url": "img/4.webp",
+    "revision": "3b56c420dd45fc06899a0d6484c5de3b"
+  },
+  {
+    "url": "img/5.webp",
+    "revision": "c8f2b6c38aec3fee34efb7cc549fbd6b"
+  },
+  {
+    "url": "img/6.webp",
+    "revision": "d422e446ed66b5eeff69b3e0ed7ab9a8"
+  },
+  {
+    "url": "img/7.webp",
+    "revision": "675523dfcba4b4d82651518942577fc9"
+  },
+  {
+    "url": "img/8.webp",
+    "revision": "6f82d34a05a72255b6f84428b8f2223c"
+  },
+  {
+    "url": "img/9.webp",
+    "revision": "df66f8663eea33c2a177197c103a2149"
+  },
+  {
+    "url": "index.html",
+    "revision": "c4ca017adbbc3911955da53abf684e87"
+  },
+  {
+    "url": "js/dbhelper.js",
+    "revision": "73d5d2b8ca3a94db6e7c8c1006d260d0"
+  },
+  {
+    "url": "js/idb.js",
+    "revision": "4993779518a4e949f8b9c276992ace82"
+  },
+  {
+    "url": "js/main.js",
+    "revision": "ca725f56d2e29550bd1519f8e1df722a"
+  },
+  {
+    "url": "js/restaurant_info.js",
+    "revision": "39a0177cb6de6d094b1a0fd6b384574e"
+  },
+  {
+    "url": "restaurant.html",
+    "revision": "b4236eb9c5a9571d706fba794058df5e"
+  }
+]);

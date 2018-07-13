@@ -85,28 +85,22 @@ gulp.task('callback-example', function(callback) {
 
 // Building the production service worker https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#3
 gulp.task('service-worker', () => {
-  return workboxBuild.injectManifest({
-    swSrc: 'src/sw.js',
-    swDest: 'dist/sw.js',
-    globDirectory: 'dist',
-    globPatterns: [
-      '**\/*.{html,css,js,webp}',
-      'img/touch/*.png',
-      'manifest.json'
-    ],
-    globIgnores: [
-      'workbox-config.js',
-      'node_modules/**/*'
-    ]
-  }).then(({warnings}) => {
+    return workboxBuild.injectManifest({
+        globDirectory: 'dist',
+        globPatterns: [
+            '**/*.{html,css,js,webp}'
+        ],
+        swDest: 'dist/sw.js',
+        swSrc: 'src/sw.js',
+    }).then(({warnings}) => {
         // In case there are any warnings from workbox-build, log them.
         for (const warning of warnings) {
           console.warn(warning);
         }
         console.info('Service worker generation completed.');
-      }).catch(err => {
-    console.log('[ERROR]: ' + err);
-  });
+      }).catch((error) => {
+        console.warn('Service worker generation failed:', error);
+      });
 });
 
 
@@ -137,6 +131,11 @@ gulp.task('copy-manifest', () => {
     .pipe(gulp.dest('dist'));
 })
 
+gulp.task('copy-icons', () => {
+    gulp.src('src/img/icons/*.png')
+    .pipe(gulp.dest('dist/img/icons'));
+})
+
 // This is the default task and app's build process
 gulp.task('default', ['clean'], cb => {
   runSequence(
@@ -146,6 +145,7 @@ gulp.task('default', ['clean'], cb => {
     'copy-manifest',
     'imageMin',
     'formatWebP',
+    'copy-icons',
     'service-worker',
     cb
   );
