@@ -8,7 +8,7 @@ const imagemin = require('gulp-imagemin');
 const webp = require('gulp-webp');
 
 
-/*
+/* Gulp JS Crash Course https://www.youtube.com/watch?v=1rw9MfIleEg&t=1128s
 	TOP LEVEL FUNCTIONS
 	gulp.task - Define tasks
 	gulp.src - Point to files to use
@@ -93,7 +93,6 @@ gulp.task('service-worker', () => {
         swDest: 'dist/sw.js',
         swSrc: 'src/sw.js',
     }).then(({warnings}) => {
-        // In case there are any warnings from workbox-build, log them.
         for (const warning of warnings) {
           console.warn(warning);
         }
