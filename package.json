@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nnise/mws-restaurant-stage-2#readme",
   "devDependencies": {
+    "browser-sync": "^2.24.5",
     "gulp": "^3.9.1",
     "gulp-imagemin": "^4.1.0",
     "gulp-webp": "^3.0.0",

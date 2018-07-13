@@ -34,7 +34,7 @@ gulp.task('imageMin', () =>
 gulp.task('formatWebP', () =>
     gulp.src('src/img/*.jpg')
         .pipe(webp())
-        .pipe(gulp.dest('src/img'))
+        .pipe(gulp.dest('dist/img'))
 );
 
 
@@ -81,6 +81,8 @@ gulp.task('callback-example', function(callback) {
 */
 
 
+
+
 // Building the production service worker https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#3
 gulp.task('service-worker', () => {
   return workboxBuild.injectManifest({
@@ -96,14 +98,54 @@ gulp.task('service-worker', () => {
       'workbox-config.js',
       'node_modules/**/*'
     ]
-  }).catch(err => {
+  }).then(({warnings}) => {
+        // In case there are any warnings from workbox-build, log them.
+        for (const warning of warnings) {
+          console.warn(warning);
+        }
+        console.info('Service worker generation completed.');
+      }).catch(err => {
     console.log('[ERROR]: ' + err);
   });
 });
 
+
+gulp.task('clean', () => {
+    return del('dist');
+})
+
+
+gulp.task('copyCss', () => {
+    return gulp.src('src/css/styles.css')
+    .pipe(gulp.dest('dist/css'));
+})
+
+gulp.task('copyHtml', () => {
+    gulp.src(['src/index.html', 'src/restaurant.html'])
+        .pipe(gulp.dest('dist'))
+});
+
+//Afterwars minify and uglify js
+gulp.task('copyJS', () => {
+    gulp.src(['src/js/dbhelper.js', 'src/js/idb.js', 'src/js/main.js', 'src/js/restaurant_info.js' ])
+        .pipe(gulp.dest('dist/js'))
+});
+
+
+gulp.task('copy-manifest', () => {
+    gulp.src('src/manifest.json')
+    .pipe(gulp.dest('dist'));
+})
+
 // This is the default task and app's build process
 gulp.task('default', ['clean'], cb => {
   runSequence(
+    'copyCss',
+    'copyHtml',
+    'copyJS',
+    'copy-manifest',
+    'imageMin',
+    'formatWebP',
     'service-worker',
     cb
   );
