@@ -18,25 +18,23 @@
     <!-- Beginning nav -->
     <div id="skip"><a href="#restaurant-container">Skip to Restaurant Details</a></div>
     <nav>
-      <h1><a href="/src/">Restaurant Reviews</a></h1>
+      <h1><a href="index.html">Restaurant Reviews</a></h1>
     </nav>
     <!-- Beginning breadcrumb -->
     <ul aria-label="Breadcrumb" id="breadcrumb" role="navigation">
-      <li><a href="/">Home</a></li>
+      <li><a href="index.html">Home</a></li>
     </ul>
     <!-- End breadcrumb -->
     <!-- End nav -->
-    <button id="mapButton" name="show map" aria-label="show Google maps">See map</button>
   </header>
   <!-- End header -->
 
   <!-- Beginning main -->
-  <main id="maincontent">
+  <main id="maincontent" role="main">
+    
     <!-- Beginning map -->
     <section id="map-container">
-      <div id="map" role="application" tabindex="-1" aria-label="Restaurants in Google Maps" aria-label="map"></div>
-
-      <p>
+      <div id="map" role="application" aria-label="Restaurants in Google Maps" aria-label="map"></div>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
@@ -45,8 +43,8 @@
       <img id="restaurant-img">
       <p id="restaurant-cuisine"></p>
       <p id="restaurant-address"></p>
-      
-      <table id="restaurant-hours" role="table" aria-label="opening hours">Opening hours</table>
+      <button id="mapButton" name="show map" aria-label="show Google maps">See map</button>
+    <table id="restaurant-hours" role="table" aria-label="opening hours">Opening hours</table>
       </p>
     </section>
     <!-- end restaurant -->
