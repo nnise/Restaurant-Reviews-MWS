@@ -34,7 +34,6 @@
     <!-- Beginning map -->
     <section id="map-container">
       <div id="map" role="application" aria-label="Restaurants in Google Maps" aria-label="map"></div>
-      <button id="mapButton" name="show map">Show me Google Maps</button>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
@@ -72,6 +71,24 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzBZiYt4E4ig9IEPIkvnG663D6DsSfUIE&libraries=places&callback=initMap"></script>
   <!-- JQuery libray for Map focus -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  <script>google.maps.event.addListener(map, 'tilesloaded', function(){
+    var nodes = $('#map').find('*');
+    for(var i=0; i<nodes.length; i++){nodes[i].setAttribute('tabindex','-1'); 
+  }
+  });
+  /**
+ * Remove tabs in map links ends
+ */
+  updateRestaurants();
+  /**
+ * A button to make the map optional and improve performance
+ */
+  document.getElementById('mapButton').addEventListener('click', () => {
+  document.getElementById('map').className = 'open';
+  });
+</script>
+
   <!-- End scripts -->
 
 </body>

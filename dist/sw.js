@@ -18,7 +18,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "css/styles.css",
-    "revision": "2e708cbb2bb00cf2a5a7e61004d5fff7"
+    "revision": "ae6fb85d27f8f556d42a5d564e3963a1"
   },
   {
     "url": "img/1.webp",
@@ -62,7 +62,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "index.html",
-    "revision": "c4ca017adbbc3911955da53abf684e87"
+    "revision": "e8a04e1c6f38a71ba182e6eece8828b5"
   },
   {
     "url": "js/dbhelper.js",
@@ -82,6 +82,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "restaurant.html",
-    "revision": "a1d5e062e23ba331c4f19c35e1d3b9b8"
+    "revision": "8094400f1489d8ccec8dbb2f97c14c86"
   }
 ]);
