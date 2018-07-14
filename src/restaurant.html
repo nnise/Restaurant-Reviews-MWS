@@ -33,11 +33,12 @@
   <main id="maincontent">
     <!-- Beginning map -->
     <section id="map-container">
-      <div id="map" role="application" aria-label="Restaurants in Google Maps" aria-label="map"></div>
+      <div id="map" role="application" tabindex="-1" aria-label="Restaurants in Google Maps" aria-label="map"></div>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
     <section id="restaurant-container">
+      <button id="mapButton" name="show map" aria-label="show Google maps">See in map</button>
       <h1 id="restaurant-name"></h1>
       <img id="restaurant-img">
       <p id="restaurant-cuisine"></p>
@@ -71,23 +72,6 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzBZiYt4E4ig9IEPIkvnG663D6DsSfUIE&libraries=places&callback=initMap"></script>
   <!-- JQuery libray for Map focus -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  
-  <script>google.maps.event.addListener(map, 'tilesloaded', function(){
-    var nodes = $('#map').find('*');
-    for(var i=0; i<nodes.length; i++){nodes[i].setAttribute('tabindex','-1'); 
-  }
-  });
-  /**
- * Remove tabs in map links ends
- */
-  updateRestaurants();
-  /**
- * A button to make the map optional and improve performance
- */
-  document.getElementById('mapButton').addEventListener('click', () => {
-  document.getElementById('map').className = 'open';
-  });
-</script>
 
   <!-- End scripts -->
 
