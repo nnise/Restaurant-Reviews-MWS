@@ -119,7 +119,7 @@ window.initMap = () => {
  * A button to make the map optional and improve performance
  */
   document.getElementById('mapButton').addEventListener('click', () => {
-  document.getElementById('map').className = 'open';
+  document.getElementById('map').className = 'show';
   });
 
 /**

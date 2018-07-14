@@ -20,6 +20,11 @@ window.initMap = () => {
   });
 }
 
+  document.getElementById('mapButton').addEventListener('click', () => {
+  document.getElementById('map').className = 'show';
+  });
+
+
 /**
  * Get current restaurant from page URL.
  */
