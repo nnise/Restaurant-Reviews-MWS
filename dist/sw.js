@@ -82,6 +82,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "restaurant.html",
-    "revision": "3f93240bc8123a35f583ea032b77003b"
+    "revision": "367921303b7fad423663445703b312d4"
   }
 ]);
