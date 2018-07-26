@@ -35,7 +35,7 @@ const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   // checks if the objectStore Reviews already exists and updates it
   if(!upgradeDb.objectStoreNames.contains('reviews')){
   const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
-  reviewsStore.createIndex('restaurant', 'restaurant_id'); 
+  reviewsStore.createIndex('id', 'restaurant_id'); 
   }
 }); 
 
@@ -73,6 +73,7 @@ class DBHelper {
               }
             })
             dbPromise.then((db) => {
+              debugger;
               const tx = db.transaction('restaurants', 'readwrite');
               const restaurantsStore = tx.objectStore('restaurants');
               restaurants.forEach(restaurant=>restaurantsStore.put(restaurant))
@@ -224,18 +225,23 @@ class DBHelper {
    * Fetch all reviews
    */
   static fetchReviews(id, callback) {
-
+       debugger;
       dbPromise.then((db) => {
+      debugger;
         const tx = db.transaction('reviews', 'readwrite');
         const reviewsStore = tx.objectStore('reviews');
         return reviewsStore.getAll()
       }).then((reviews) => {
+        debugger;
         if(reviews.length) {
+          debugger;
           console.log('dbPromise.then', reviews)
           callback(null,reviews) 
         } else {
-          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`)
+          debugger;
+          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${restaurant.id}`)
           .then((revws) => {
+           debugger;
             return revws.json();
           })
         
@@ -259,8 +265,10 @@ class DBHelper {
       })
     }
     static fetchReviewById(id, callback) {
+       debugger;
     // fetch all restaurants with proper error handling.
     DBHelper.fetchReviews((error, restaurants) => {
+      debugger;
       if (error) {
         callback(error, null);
       } else {
