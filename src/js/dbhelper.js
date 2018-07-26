@@ -25,10 +25,16 @@ const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   return;
   }
 
-  // checks if the objectStore already exists and updates it
+  // checks if the objectStore Restaurants already exists and updates it
   if(!upgradeDb.objectStoreNames.contains('restaurants')){
   const store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
   store.createIndex('id', 'id', {unique: true}); 
+  }
+
+  // checks if the objectStore Reviews already exists and updates it
+  if(!upgradeDb.objectStoreNames.contains('reviews')){
+  const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
+  reviewsStore.createIndex('restaurant', 'restaurant_id'); 
   }
 }); 
 
@@ -210,5 +216,43 @@ class DBHelper {
     );
     return marker;
   }
+
+  /**
+   * Fetch all reviews
+   */
+  static fetchReviews(reviews, callback) {
+      dbPromise.then((db) => {
+        const tx = db.transaction('reviews', 'readwrite');
+        const reviewsStore = tx.objectStore('reviews');
+        return reviewsStore.getAll()
+      }).then((reviews) => {
+        if(reviews.length) {
+          callback(null,reviews) 
+        } else {
+          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=<restaurant_id`)
+          .then((revws) => {
+            return revws.json();
+          })
+          .then((revws) => {
+            const reviews = revws;
+            /*reviews.forEach((review,index) => {
+              if(restaurant.id) {
+                restaurant.alt = altTags[restaurant.id]
+              }
+            })*/
+            dbPromise.then((db) => {
+              const tx = db.transaction('reviews', 'readwrite');
+              const reviewsStore = tx.objectStore('reviews');
+              reviewsStore.forEach(review=>store.put(review))
+            })
+            callback(null,restaurants);
+          })
+        }
+      })
+    }
+
+
+
+
 
 }
