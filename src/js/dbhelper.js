@@ -12,6 +12,7 @@ const altTags = {
 }
 
 
+
   /**
    * Open a database using IndexedDB
    */
@@ -217,23 +218,29 @@ class DBHelper {
     return marker;
   }
 
+
+
   /**
    * Fetch all reviews
    */
-  static fetchReviews(reviews, callback) {
+  static fetchReviews(id, callback) {
+
       dbPromise.then((db) => {
         const tx = db.transaction('reviews', 'readwrite');
         const reviewsStore = tx.objectStore('reviews');
-        //return reviewsStore.getAll()
+        return reviewsStore.getAll()
       }).then((reviews) => {
         if(reviews.length) {
+          console.log('dbPromise.then', reviews)
           callback(null,reviews) 
         } else {
-          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=<restaurant_id`)
+          fetch = (`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`)
           .then((revws) => {
             return revws.json();
           })
+        
           .then((revws) => {
+            debugger;
             const reviews = revws;
             /*reviews.forEach((review,index) => {
               if(restaurant.id) {
@@ -241,15 +248,31 @@ class DBHelper {
               }
             })*/
             dbPromise.then((db) => {
+        debugger;
               const tx = db.transaction('reviews', 'readwrite');
               const reviewsStore = tx.objectStore('reviews');
               reviewsStore.forEach(review=>reviewsStore.put(review))
             })
-            callback(null,restaurants);
+            callback(null,reviews);
           })
         }
       })
     }
+    static fetchReviewById(id, callback) {
+    // fetch all restaurants with proper error handling.
+    DBHelper.fetchReviews((error, restaurants) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        const review = review.find(r => r.id == id);
+        if (review) { // Got the restaurant
+          callback(null, review);
+        } else { // Restaurant does not exist in the database
+          callback('Review does not exist', null);
+        }
+      }
+    });
+  }
 
 
 
