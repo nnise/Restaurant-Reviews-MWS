@@ -12,6 +12,7 @@ const altTags = {
 }
 
 
+
   /**
    * Open a database using IndexedDB
    */
@@ -25,10 +26,16 @@ const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   return;
   }
 
-  // checks if the objectStore already exists and updates it
+  // checks if the objectStore Restaurants already exists and updates it
   if(!upgradeDb.objectStoreNames.contains('restaurants')){
   const store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
   store.createIndex('id', 'id', {unique: true}); 
+  }
+
+  // checks if the objectStore Reviews already exists and updates it
+  if(!upgradeDb.objectStoreNames.contains('reviews')){
+  const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
+  reviewsStore.createIndex('id', 'restaurant_id'); 
   }
 }); 
 
@@ -66,6 +73,7 @@ class DBHelper {
               }
             })
             dbPromise.then((db) => {
+              debugger;
               const tx = db.transaction('restaurants', 'readwrite');
               const restaurantsStore = tx.objectStore('restaurants');
               restaurants.forEach(restaurant=>restaurantsStore.put(restaurant))
@@ -80,6 +88,7 @@ class DBHelper {
    */
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
+
     DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
@@ -211,4 +220,122 @@ class DBHelper {
     return marker;
   }
 
+
+
+  /**
+   * Fetch all reviews
+   */
+
+  
+  static fetchReviews(callback) {
+       debugger;
+      dbPromise.then((db) => {
+      debugger;
+        const tx = db.transaction('reviews', 'readwrite');
+        const reviewsStore = tx.objectStore('reviews');
+        return reviewsStore.getAll()
+      }).then((reviews) => {
+        debugger;
+        if(reviews.length) {
+          debugger;
+          console.log('dbPromise.then', reviews)
+          callback(null,reviews) 
+        } else {
+          debugger;
+          fetch(`${DBHelper.DATABASE_URL}/reviews`) //all reviews, check if there's easier way to do it only for the reviews for one restaurant
+          .then((revws) => {
+           debugger;
+            return revws.json();
+          })
+        
+          .then((revws) => { //check how to delete this
+            debugger;
+            const reviews = revws;
+            /*reviews.forEach((review,index) => {
+              if(restaurant.id) {
+                restaurant.alt = altTags[restaurant.id]
+              }
+            })*/
+           dbPromise.then((db) => {
+          debugger;
+              const tx = db.transaction('reviews', 'readwrite');
+              const reviewsStore = tx.objectStore('reviews');
+              reviews.forEach(review=>reviewsStore.put(review))
+            })
+            callback(null,reviews);
+          })
+        }
+      })
+    }
+
+    static fetchReviewsById(id, callback) {
+    // debugger;
+    // fetch all reviews with proper error handling.
+
+    DBHelper.fetchReviews((error, reviews) => {
+      debugger;
+      if (error) {
+        callback(error, null);
+      } else {
+        if (reviews) { // Got the restaurant
+          callback(null, reviews);
+        } else { // Restaurant does not exist in the database
+          callback('Review does not exist', null);
+        }
+
+        /* 
+        //searh for a way to get all reviews for the one restaurant
+        const review = review.find(r => r.id == id);
+        if (review) { // Got the restaurant
+          callback(null, review);
+        } else { // Restaurant does not exist in the database
+          callback('Review does not exist', null);
+        }
+        */
+      }
+    });
+  }
+
+/**
+   * Fetch all restaurants Test
+   
+
+static fetchReviewsByRestId(id) {
+    return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${restaurant.id}`)
+      .then(response => response.json())
+      .then(reviews => {
+        this.dbPromise()
+          .then(db => {
+            if (!db) return;
+
+            let tx = db.transaction('reviews', 'readwrite');
+            const store = tx.objectStore('reviews');
+            if (Array.isArray(reviews)) {
+              reviews.forEach(function(review) {
+                store.put(review);
+              });
+            } else {
+              store.put(reviews);
+            }
+          });
+        console.log('revs are: ', reviews);
+        return Promise.resolve(reviews);
+      })
+      .catch(error => {
+        return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
+          .then((storedReviews) => {
+            console.log('looking for offline stored reviews');
+            return Promise.resolve(storedReviews);
+          })
+      });
+  }
+
+*/
+
+
 }
+
+
+///TEST
+
+

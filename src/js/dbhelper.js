@@ -296,46 +296,6 @@ class DBHelper {
     });
   }
 
-/**
-   * Fetch all restaurants Test
-   
-
-static fetchReviewsByRestId(id) {
-    return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${restaurant.id}`)
-      .then(response => response.json())
-      .then(reviews => {
-        this.dbPromise()
-          .then(db => {
-            if (!db) return;
-
-            let tx = db.transaction('reviews', 'readwrite');
-            const store = tx.objectStore('reviews');
-            if (Array.isArray(reviews)) {
-              reviews.forEach(function(review) {
-                store.put(review);
-              });
-            } else {
-              store.put(reviews);
-            }
-          });
-        console.log('revs are: ', reviews);
-        return Promise.resolve(reviews);
-      })
-      .catch(error => {
-        return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
-          .then((storedReviews) => {
-            console.log('looking for offline stored reviews');
-            return Promise.resolve(storedReviews);
-          })
-      });
-  }
-
-*/
-
-
 }
-
-
-///TEST
 
 
