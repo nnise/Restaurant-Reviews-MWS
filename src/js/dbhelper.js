@@ -224,7 +224,7 @@ class DBHelper {
       dbPromise.then((db) => {
         const tx = db.transaction('reviews', 'readwrite');
         const reviewsStore = tx.objectStore('reviews');
-        return reviewsStore.getAll()
+        //return reviewsStore.getAll()
       }).then((reviews) => {
         if(reviews.length) {
           callback(null,reviews) 
@@ -243,7 +243,7 @@ class DBHelper {
             dbPromise.then((db) => {
               const tx = db.transaction('reviews', 'readwrite');
               const reviewsStore = tx.objectStore('reviews');
-              reviewsStore.forEach(review=>store.put(review))
+              reviewsStore.forEach(review=>reviewsStore.put(review))
             })
             callback(null,restaurants);
           })
