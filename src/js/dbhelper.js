@@ -234,7 +234,7 @@ class DBHelper {
           console.log('dbPromise.then', reviews)
           callback(null,reviews) 
         } else {
-          fetch = (`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`)
+          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`)
           .then((revws) => {
             return revws.json();
           })
