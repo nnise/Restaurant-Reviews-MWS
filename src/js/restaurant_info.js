@@ -44,9 +44,18 @@ const fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
+   
+      // NEW: call fetchreviewsbyID 
+    DBHelper.fetchReviewsById(id, (error, reviews) => {
+      self.reviews = reviews;
+      if (!reviews) {
+        console.error(error);
+        return;
+      }
+    });
       fillRestaurantHTML();
       callback(null, restaurant)
-    });
+   });  
   }
 }
 
@@ -99,7 +108,8 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+ // change from self.restaurant.reviews to self.reviews -- clarify: two diff. tables reviews and restaurants or reviews is part of the restaurants
+const fillReviewsHTML = (reviews = self.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
