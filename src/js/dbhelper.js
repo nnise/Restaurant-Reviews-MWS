@@ -14,28 +14,33 @@ const altTags = {
 
 
   /**
-   * Open a database using IndexedDB
+   * Opening & sting up a database using IndexedDB (name, version, updgradeCallback)
+   and assign it to a promise
    */
 const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   if (!navigator.serviceWorker) {
+    //this method resolves to a database object
     return Promise.resolve();
   }
 
+  //checking for IndexedDB support
   if (!("indexedDB" in window)) {
   console.log("This browser doesn\"t support IndexedDB");
   return;
   }
 
-  // checks if the objectStore Restaurants already exists and updates it
+  // checks if the objectStore Restaurants already exists, if not, creates one
   if(!upgradeDb.objectStoreNames.contains('restaurants')){
   const store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
   store.createIndex('id', 'id', {unique: true}); 
   }
 
-  // checks if the objectStore Reviews already exists and updates it
+  // checks if the objectStore Restaurants already exists, if not, creates one
   if(!upgradeDb.objectStoreNames.contains('reviews')){
-  const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
-  reviewsStore.createIndex('id', 'restaurant_id'); 
+  //assigning the result of createObjectStore (object store object) to a variable to
+  //be able to call createIndex on it.
+  const store = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
+  store.createIndex('restaurant', 'restaurant_id'); 
   }
 }); 
 
@@ -52,33 +57,55 @@ class DBHelper {
 
   /**
    * Fetch all restaurants.
+   * comments are some extracts of https://developers.google.com/web/ilt/pwa/working-with-indexeddb
    */
   static fetchRestaurants(callback) {
-      dbPromise.then((db) => {
+      //calling the database object returned from idb.open to start interactions with the databse
+      dbPromise
+      // calling .then on dbPromise which resolves to the database object, and pass this object to the callback function in .then
+      //when .then executes the database is open and all object stores and indexes are ready for use, because db Promise (idb.open) is a promise
+      .then((db) => {
+        //opening a transaction on the database object
         const tx = db.transaction('restaurants', 'readwrite');
+        //opening object store on transaction
         const restaurantsStore = tx.objectStore('restaurants');
+        // returns an IDBRequest object containing all the object in the object store matching the specified prameter
+        // or all objects in the store if no parameters are given
         return restaurantsStore.getAll()
-      }).then((restaurants) => {
+      })
+      .then((restaurants) => {
+        //verifying the amount of restaurants
         if(restaurants.length) {
           callback(null,restaurants) 
         } else {
-          fetch(`${DBHelper.DATABASE_URL}/restaurants`)
-          .then((rest) => {
-            return rest.json();
-          }).then((rest) => {
-            const restaurants = rest;
+        //making a Fetch request for the resource needed as a parameter
+        fetch(`${DBHelper.DATABASE_URL}/restaurants`)
+      .then((response) => {
+          //validates response. It checks 
+        if (!response.ok){
+            throw Error (response.statusText);
+          }
+        //reading the response of the request as json // reads the response and returns a promise that resolves to JSON
+        return response.json();
+        })
+      .then((response) => {
+          const restaurants = response;
+          // matching the altTags to each restaurant by ID
             restaurants.forEach((restaurant,index) => {
               if(restaurant.id) {
                 restaurant.alt = altTags[restaurant.id]
               }
-            })
-            dbPromise.then((db) => {
+          console.log(restaurants);
+           })
+
+          //opens Database and updates altTags info to each resturant with the putMethod
+          dbPromise.then((db) => {
               debugger;
               const tx = db.transaction('restaurants', 'readwrite');
               const restaurantsStore = tx.objectStore('restaurants');
               restaurants.forEach(restaurant=>restaurantsStore.put(restaurant))
             })
-            callback(null,restaurants);
+          callback(null,restaurants);
           })
         }
       })
@@ -227,25 +254,30 @@ class DBHelper {
    */
 
   
-  static fetchReviews(callback) {
-       debugger;
+  static fetchReviews(table, objects) {
+      debugger;
       dbPromise.then((db) => {
       debugger;
-        const tx = db.transaction('reviews', 'readwrite');
-        const reviewsStore = tx.objectStore('reviews');
-        return reviewsStore.getAll()
-      }).then((reviews) => {
-        debugger;
-        if(reviews.length) {
+        const tx = db.transaction('table', 'readwrite');
+        const reviewsStore = tx.objectStore('table');
+        return reviewsStore.getAll();
+        if(Array.isArray(objects)) {
+          objects.forEach(object=>reviewsStore.put(object))
           debugger;
           console.log('dbPromise.then', reviews)
-          callback(null,reviews) 
+          //callback(null,reviews) 
         } else {
+
+          reviewsStore.put(objects);
+
+        //}
+      
+
           debugger;
-          fetch(`${DBHelper.DATABASE_URL}/reviews`) //all reviews, check if there's easier way to do it only for the reviews for one restaurant
+          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`) //all reviews, check if there's easier way to do it only for the reviews for one restaurant
           .then((revws) => {
            debugger;
-            return revws.json();
+           return revws.json();
           })
         
           .then((revws) => { //check how to delete this
@@ -272,7 +304,7 @@ class DBHelper {
     // debugger;
     // fetch all reviews with proper error handling.
 
-    DBHelper.fetchReviews((error, reviews) => {
+    DBHelper.fetchReviews((error, reviews) => { 
       debugger;
       if (error) {
         callback(error, null);
