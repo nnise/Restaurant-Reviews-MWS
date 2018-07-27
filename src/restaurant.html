@@ -53,19 +53,22 @@
     <section id="reviews-container">
       <!-- Creating a new review -->
       <h2 id="newReview-title">Add a review</h2>
+      <br>
       <form id="newReview-form">
-      Name: <br>
-      <input type="text" name="reviewer_name">
-      Rating: <br>
-      <select name="rating">
+      <label for = "reviewer-name"> Your name: <br>
+      <input id="reviewer-name" type="text" name="name"><br>
+      <label for = "reviewer-name"> Your rating:
+      <select id="rating" name="rating" aria-label="rating selector">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
         <option value="5">5</option>
       </select>
-      Comments:
-      <input type="text" name="comment_text">
+      <br>
+      <label for = "comment-text"> Your opinion on this restaurant: <br>
+      <textarea id ="comment-text" type="text" name="comments"> </textarea>
+      <br>
       <input type="submit">
       </form>
       <!-- Past reviews -->

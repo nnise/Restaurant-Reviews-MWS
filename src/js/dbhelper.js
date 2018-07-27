@@ -95,8 +95,8 @@ class DBHelper {
               if(restaurant.id) {
                 restaurant.alt = altTags[restaurant.id]
               }
-          console.log(restaurants);
            })
+          console.log(restaurants);
 
           //opens Database and updates altTags info to each resturant with the putMethod
           dbPromise.then((db) => {
@@ -254,80 +254,51 @@ class DBHelper {
    */
 
   
-  static fetchReviews(table, objects) {
-      debugger;
-      dbPromise.then((db) => {
-      debugger;
-        const tx = db.transaction('table', 'readwrite');
-        const reviewsStore = tx.objectStore('table');
-        return reviewsStore.getAll();
-        if(Array.isArray(objects)) {
-          objects.forEach(object=>reviewsStore.put(object))
-          debugger;
-          console.log('dbPromise.then', reviews)
-          //callback(null,reviews) 
+  static fetchReviews(callback) {
+      dbPromise
+      .then((db) => {
+        const tx = db.transaction('reviews', 'readwrite');
+        const reviewsStore = tx.objectStore('reviews');
+        return reviewsStore.getAll()
+      })
+      .then((reviews) => {
+        if(reviews.length) {
+          
+          callback(null,reviews) 
         } else {
-
-          reviewsStore.put(objects);
-
-        //}
-      
-
-          debugger;
-          fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`) //all reviews, check if there's easier way to do it only for the reviews for one restaurant
-          .then((revws) => {
-           debugger;
-           return revws.json();
-          })
-        
-          .then((revws) => { //check how to delete this
-            debugger;
-            const reviews = revws;
-            /*reviews.forEach((review,index) => {
-              if(restaurant.id) {
-                restaurant.alt = altTags[restaurant.id]
-              }
-            })*/
-           dbPromise.then((db) => {
-          debugger;
+          //fetches all reviews of all restaurants
+          fetch(`${DBHelper.DATABASE_URL}/reviews`)
+      .then((response) => {
+          return response.json();
+          }) 
+      .then((response) => {   
+            const reviews = response;
+            //calls database object
+            dbPromise
+            .then((db) => {
               const tx = db.transaction('reviews', 'readwrite');
               const reviewsStore = tx.objectStore('reviews');
               reviews.forEach(review=>reviewsStore.put(review))
-            })
-            callback(null,reviews);
+            }) 
+          callback(null,reviews);
           })
         }
       })
     }
+     
 
-    static fetchReviewsById(id, callback) {
-    // debugger;
-    // fetch all reviews with proper error handling.
-
-    DBHelper.fetchReviews((error, reviews) => { 
-      debugger;
+     static fetchReviewsById(id, callback) {
+      DBHelper.fetchReviews((error, reviews) => {
       if (error) {
         callback(error, null);
       } else {
-        if (reviews) { // Got the restaurant
-          callback(null, reviews);
-        } else { // Restaurant does not exist in the database
-          callback('Review does not exist', null);
-        }
+        // Filter restaurants to have only given restaurant.id
+        const results = reviews.filter(r => r.restaurant_id == id);
+        console.log(results);
+        callback(null, results);
 
-        /* 
-        //searh for a way to get all reviews for the one restaurant
-        const review = review.find(r => r.id == id);
-        if (review) { // Got the restaurant
-          callback(null, review);
-        } else { // Restaurant does not exist in the database
-          callback('Review does not exist', null);
-        }
-        */
       }
     });
   }
 
-}
-
-
+ }
