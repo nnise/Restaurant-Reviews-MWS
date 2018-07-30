@@ -120,7 +120,7 @@ gulp.task('copyHtml', () => {
 
 //Afterwars minify and uglify js
 gulp.task('copyJS', () => {
-    gulp.src(['src/js/dbhelper.js', 'src/js/idb.js', 'src/js/main.js', 'src/js/restaurant_info.js' ])
+    gulp.src(['src/js/dbhelper.js', 'src/js/idb.js', 'src/js/main.js', 'src/js/restaurant_info.js', 'src/js/reviews.js' ])
         .pipe(gulp.dest('dist/js'))
 });
 

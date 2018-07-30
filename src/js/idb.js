@@ -1,4 +1,18 @@
-//from https://github.com/jakearchibald/idb/blob/master/lib/idb.js
+/*
+Copyright 2018 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 'use strict';
 
 (function() {
@@ -42,9 +56,6 @@
       Object.defineProperty(ProxyClass.prototype, prop, {
         get: function() {
           return this[targetProp][prop];
-        },
-        set: function(val) {
-          this[targetProp][prop] = val;
         }
       });
     });
@@ -160,7 +171,6 @@
     'clear',
     'get',
     'getAll',
-    'getKey',
     'getAllKeys',
     'count'
   ]);
@@ -181,9 +191,6 @@
         resolve();
       };
       idbTransaction.onerror = function() {
-        reject(idbTransaction.error);
-      };
-      idbTransaction.onabort = function() {
         reject(idbTransaction.error);
       };
     });
@@ -245,14 +252,10 @@
   // TODO: remove this once browsers do the right thing with promises
   ['openCursor', 'openKeyCursor'].forEach(function(funcName) {
     [ObjectStore, Index].forEach(function(Constructor) {
-      // Don't create iterateKeyCursor if openKeyCursor doesn't exist.
-      if (!(funcName in Constructor.prototype)) return;
-
       Constructor.prototype[funcName.replace('open', 'iterate')] = function() {
         var args = toArray(arguments);
         var callback = args[args.length - 1];
-        var nativeObject = this._store || this._index;
-        var request = nativeObject[funcName].apply(nativeObject, args.slice(0, -1));
+        var request = (this._store || this._index)[funcName].apply(this._store, args.slice(0, -1));
         request.onsuccess = function() {
           callback(request.result);
         };
@@ -290,13 +293,11 @@
       var p = promisifyRequestCall(indexedDB, 'open', [name, version]);
       var request = p.request;
 
-      if (request) {
-        request.onupgradeneeded = function(event) {
-          if (upgradeCallback) {
-            upgradeCallback(new UpgradeDB(request.result, event.oldVersion, request.transaction));
-          }
-        };
-      }
+      request.onupgradeneeded = function(event) {
+        if (upgradeCallback) {
+          upgradeCallback(new UpgradeDB(request.result, event.oldVersion, request.transaction));
+        }
+      };
 
       return p.then(function(db) {
         return new DB(db);
@@ -309,7 +310,6 @@
 
   if (typeof module !== 'undefined') {
     module.exports = exp;
-    module.exports.default = module.exports;
   }
   else {
     self.idb = exp;
