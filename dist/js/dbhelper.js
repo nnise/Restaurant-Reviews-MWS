@@ -14,28 +14,33 @@ const altTags = {
 
 
   /**
-   * Open a database using IndexedDB
+   * Opening & setting up a database using IndexedDB (name, version, updgradeCallback)
+   and assign it to a promise
    */
 const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   if (!navigator.serviceWorker) {
+    //this method resolves to a database object
     return Promise.resolve();
   }
 
+  //checking for IndexedDB support
   if (!("indexedDB" in window)) {
   console.log("This browser doesn\"t support IndexedDB");
   return;
   }
 
-  // checks if the objectStore Restaurants already exists and updates it
+  // checks if the objectStore Restaurants already exists, if not, creates one
   if(!upgradeDb.objectStoreNames.contains('restaurants')){
   const store = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
   store.createIndex('id', 'id', {unique: true}); 
   }
 
-  // checks if the objectStore Reviews already exists and updates it
+  // checks if the objectStore Restaurants already exists, if not, creates one
   if(!upgradeDb.objectStoreNames.contains('reviews')){
-  const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
-  reviewsStore.createIndex('id', 'restaurant_id'); 
+  //assigning the result of createObjectStore (object store object) to a variable to
+  //be able to call createIndex on it.
+  const store = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
+  store.createIndex('restaurant', 'restaurant_id'); 
   }
 }); 
 
@@ -52,33 +57,55 @@ class DBHelper {
 
   /**
    * Fetch all restaurants.
+   * comments are some extracts of https://developers.google.com/web/ilt/pwa/working-with-indexeddb
    */
   static fetchRestaurants(callback) {
-      dbPromise.then((db) => {
+      //calling the database object returned from idb.open to start interactions with the databse
+      dbPromise
+      // calling .then on dbPromise which resolves to the database object, and pass this object to the callback function in .then
+      //when .then executes the database is open and all object stores and indexes are ready for use, because db Promise (idb.open) is a promise
+      .then((db) => {
+        //opening a transaction on the database object
         const tx = db.transaction('restaurants', 'readwrite');
+        //opening object store on transaction
         const restaurantsStore = tx.objectStore('restaurants');
+        // returns an IDBRequest object containing all the object in the object store matching the specified prameter
+        // or all objects in the store if no parameters are given
         return restaurantsStore.getAll()
-      }).then((restaurants) => {
+      })
+      .then((restaurants) => {
+        //verifying the amount of restaurants
         if(restaurants.length) {
           callback(null,restaurants) 
         } else {
-          fetch(`${DBHelper.DATABASE_URL}/restaurants`)
-          .then((rest) => {
-            return rest.json();
-          }).then((rest) => {
-            const restaurants = rest;
+        //making a Fetch request for the resource needed as a parameter
+        fetch(`${DBHelper.DATABASE_URL}/restaurants`)
+      .then((response) => {
+          //validates response. It checks 
+        if (!response.ok){
+            throw Error (response.statusText);
+          }
+        //reading the response of the request as json // reads the response and returns a promise that resolves to JSON
+        return response.json();
+        })
+      .then((response) => {
+          const restaurants = response;
+          // matching the altTags to each restaurant by ID
             restaurants.forEach((restaurant,index) => {
               if(restaurant.id) {
                 restaurant.alt = altTags[restaurant.id]
               }
-            })
-            dbPromise.then((db) => {
+           })
+          console.log(restaurants);
+
+          //opens Database and updates altTags info to each resturant with the putMethod
+          dbPromise.then((db) => {
               debugger;
               const tx = db.transaction('restaurants', 'readwrite');
               const restaurantsStore = tx.objectStore('restaurants');
               restaurants.forEach(restaurant=>restaurantsStore.put(restaurant))
             })
-            callback(null,restaurants);
+          callback(null,restaurants);
           })
         }
       })
@@ -221,121 +248,212 @@ class DBHelper {
   }
 
 
-
-  /**
-   * Fetch all reviews
-   */
-
-  
-  static fetchReviews(callback) {
-       debugger;
-      dbPromise.then((db) => {
-      debugger;
-        const tx = db.transaction('reviews', 'readwrite');
-        const reviewsStore = tx.objectStore('reviews');
-        return reviewsStore.getAll()
-      }).then((reviews) => {
-        debugger;
-        if(reviews.length) {
-          debugger;
-          console.log('dbPromise.then', reviews)
-          callback(null,reviews) 
+  /*static fetchReviewsById(id, callback) {
+      fetchReviews((error, reviews) => {
+        if (error) {
+          callback(error, null);
         } else {
-          debugger;
-          fetch(`${DBHelper.DATABASE_URL}/reviews`) //all reviews, check if there's easier way to do it only for the reviews for one restaurant
-          .then((revws) => {
-           debugger;
-            return revws.json();
-          })
-        
-          .then((revws) => { //check how to delete this
-            debugger;
-            const reviews = revws;
-            /*reviews.forEach((review,index) => {
-              if(restaurant.id) {
-                restaurant.alt = altTags[restaurant.id]
-              }
-            })*/
-           dbPromise.then((db) => {
-          debugger;
-              const tx = db.transaction('reviews', 'readwrite');
-              const reviewsStore = tx.objectStore('reviews');
-              reviews.forEach(review=>reviewsStore.put(review))
-            })
-            callback(null,reviews);
-          })
+          // Filter restaurants to have only given restaurant.id
+          const results = reviews.filter(r => r.restaurant_id == id);
+          console.log(results);
+          callback(null, results);
+
         }
-      })
-    }
-
-    static fetchReviewsById(id, callback) {
-    // debugger;
-    // fetch all reviews with proper error handling.
-
-    DBHelper.fetchReviews((error, reviews) => {
-      debugger;
-      if (error) {
-        callback(error, null);
-      } else {
-        if (reviews) { // Got the restaurant
-          callback(null, reviews);
-        } else { // Restaurant does not exist in the database
-          callback('Review does not exist', null);
-        }
-
-        /* 
-        //searh for a way to get all reviews for the one restaurant
-        const review = review.find(r => r.id == id);
-        if (review) { // Got the restaurant
-          callback(null, review);
-        } else { // Restaurant does not exist in the database
-          callback('Review does not exist', null);
-        }
-        */
-      }
-    });
-  }
-
-/**
-   * Fetch all restaurants Test
-   
-
-static fetchReviewsByRestId(id) {
-    return fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${restaurant.id}`)
-      .then(response => response.json())
-      .then(reviews => {
-        this.dbPromise()
-          .then(db => {
-            if (!db) return;
-
-            let tx = db.transaction('reviews', 'readwrite');
-            const store = tx.objectStore('reviews');
-            if (Array.isArray(reviews)) {
-              reviews.forEach(function(review) {
-                store.put(review);
-              });
-            } else {
-              store.put(reviews);
-            }
-          });
-        console.log('revs are: ', reviews);
-        return Promise.resolve(reviews);
-      })
-      .catch(error => {
-        return DBHelper.getStoredObjectById('reviews', 'restaurant', id)
-          .then((storedReviews) => {
-            console.log('looking for offline stored reviews');
-            return Promise.resolve(storedReviews);
-          })
       });
-  }
-
-*/
+    }*/
 
 
 }
 
+loadReviewsOnNetworkFirst();
 
-///TEST
+/**
+   * Fetch all reviews
+   */
+//filtering Server Data
+//escribir como funcion
+  function loadReviewsOnNetworkFirst() {
+    fetchReviews()
+  .then(dataFromNetwork => {
+    fillReviewsHTML(dataFromNetwork);
+    saveReviewDataLocally(dataFromNetwork)
+    .then(() => {
+      setLastUpdated(new Date());
+      messageDataSaved();
+    }).catch(err => {
+      messageSaveError();
+      console.warn(err);
+    });
+  }).catch(err => {
+    console.log('Network requests have failed, this happens when offline');
+    getLocalReviewData()
+    .then(offlineData => {
+      if (!offlineData.length) {
+        messageNoData();
+      } else {
+        messageOffline();
+        updateUI(offlineData);
+      }
+    });
+  });
+}
+
+   /* Network functions */
+  
+  //getting Server Data
+  function fetchReviews() {
+    return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+    .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+      debugger
+      return response.json();
+    });
+  }
+
+
+function fetchReviewsById(id) {
+    fetchReviews((error, reviews) => {
+      if (error) {
+        throw Error(response.statusText);
+      } else {
+        // Filter restaurants to have only given restaurant.id
+        const results = reviews.filter(r => r.restaurant_id == id);
+        console.log(results);
+        return results;
+
+      }
+    });
+  }
+   /*function fetchReviewsById(id) {
+    // fetch all restaurants with proper error handling.
+const results = offlineData.filter(r => r.restaurant_id == id);
+          console.log('results:',results);
+    fetchReviews((error, reviews) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        const results = offlineData.filter(r => r.restaurant_id == id);
+        console.log('results:',results);
+        }
+      }
+    });
+  }*/
+
+  //adding reviews to Server Data
+  function addAndPostReview(e) {
+    e.preventDefault();
+    const data = {
+      //id: Date.now(),
+      restaurant_id: window.location.search.slice(4),
+      name: document.getElementById('name').value,
+      rating: document.getElementById('rating').value,
+      comments: document.getElementById('comments').value
+    };
+    
+    saveReviewDataLocally([data]);
+    //createReviewHTML([data]);
+    fillReviewsHTML([data]);
+
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const body = JSON.stringify(data);
+    return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+      method: 'POST',
+      headers: headers,
+      body: body
+    });
+  }
+        
+  function getLocalReviewData() {
+  debugger
+  if (!('indexedDB' in window)) {return null;}
+  return dbPromise.then(db => {
+    debugger
+    const tx = db.transaction('reviews', 'readonly');
+    const store = tx.objectStore('reviews');
+    debugger
+    return store.getAll();
+  });
+}
+
+
+  function saveReviewDataLocally(reviews) {
+  if (!('indexedDB' in window)) {return null;}
+  return dbPromise.then(db => {
+
+    const tx = db.transaction('reviews', 'readwrite');
+    const reviewsStore = tx.objectStore('reviews');
+    return Promise.all(reviews.map(review=>reviewsStore.put(review)))
+    //return Promise.all(reviews.map(review => reviewsStore.put(review)))
+    .catch(() => {
+      tx.abort();
+      throw Error('Reviews were not added to the store');
+    });
+  });
+}
+
+  /**
+   * Adding Reviewsç Offline first, Bacground Sync
+   * based on Build an offline-first, data-driven PWA (codeLab)
+   * https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#0
+   */
+
+const container = document.getElementById('container');
+const offlineMessage = document.getElementById('offline');
+const noDataMessage = document.getElementById('no-data');
+const dataSavedMessage = document.getElementById('data-saved');
+const saveErrorMessage = document.getElementById('save-error');
+const addReviewButton = document.getElementById('add-review-button');
+
+window.onload=function(){
+addReviewButton.addEventListener('click', addAndPostReview);
+}
+
+Notification.requestPermission();
+
+
+  /**
+  /* UI functions
+  */
+
+
+function messageOffline() {
+  // alert user that data may not be current
+  const lastUpdated = getLastUpdated();
+  if (lastUpdated) {
+    offlineMessage.textContent += ' Last fetched server data: ' + lastUpdated;
+  }
+  offlineMessage.style.display = 'block';
+}
+
+function messageNoData() {
+  // alert user that there is no data available
+  noDataMessage.style.display = 'block';
+}
+
+function messageDataSaved() {
+  // alert user that data has been saved for offline
+  const lastUpdated = getLastUpdated();
+  if (lastUpdated) {dataSavedMessage.textContent += ' on ' + lastUpdated;}
+  dataSavedMessage.style.display = 'block';
+}
+
+function messageSaveError() {
+  // alert user that data couldn't be saved offline
+  saveErrorMessage.style.display = 'block';
+}
+
+/* Storage functions */
+
+function getLastUpdated() {
+  return localStorage.getItem('lastUpdated');
+}
+
+function setLastUpdated(date) {
+  localStorage.setItem('lastUpdated', date);
+}
+
+
 
 

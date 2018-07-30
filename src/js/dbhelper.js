@@ -248,87 +248,151 @@ class DBHelper {
   }
 
 
+  /*static fetchReviewsById(id, callback) {
+      fetchReviews((error, reviews) => {
+        if (error) {
+          callback(error, null);
+        } else {
+          // Filter restaurants to have only given restaurant.id
+          const results = reviews.filter(r => r.restaurant_id == id);
+          console.log(results);
+          callback(null, results);
 
-  /**
+        }
+      });
+    }*/
+
+
+}
+
+loadReviewsOnNetworkFirst();
+
+/**
    * Fetch all reviews
    */
-
+//filtering Server Data
+//escribir como funcion
+  function loadReviewsOnNetworkFirst() {
+    fetchReviews()
+  .then(dataFromNetwork => {
+    fillReviewsHTML(dataFromNetwork);
+    saveReviewDataLocally(dataFromNetwork)
+    .then(() => {
+      setLastUpdated(new Date());
+      messageDataSaved();
+    }).catch(err => {
+      messageSaveError();
+      console.warn(err);
+    });
+  }).catch(err => {
+    console.log('Network requests have failed, this happens when offline');
+    getLocalReviewData()
+    .then(offlineData => {
+      if (!offlineData.length) {
+        messageNoData();
+      } else {
+        messageOffline();
+        updateUI(offlineData);
+      }
+    });
+  });
+}
 
    /* Network functions */
   
   //getting Server Data
-  static fetchReviews(callback) {
-    dbPromise
-    .then((db) => {
-      const tx = db.transaction('reviews', 'readwrite');
-      const reviewsStore = tx.objectStore('reviews');
-      return reviewsStore.getAll()
-    })
-    .then((reviews) => {
-      if(reviews.length) {
-        callback(null,reviews) 
-      } else {
-          //fetches all reviews of all restaurants
-      fetch(`${DBHelper.DATABASE_URL}/reviews`)
-    .then((response) => {
-          return response.json();
-     }) 
-    .then((response) => {   
-      const reviews = response;
-        //calls database object
-          dbPromise
-          .then((db) => {
-            const tx = db.transaction('reviews', 'readwrite');
-            const reviewsStore = tx.objectStore('reviews');
-            reviews.forEach(review=>reviewsStore.put(review))
-          }) 
-          callback(null,reviews);
-        })
-      }
-    })
+  function fetchReviews() {
+    return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+    .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+      debugger
+      return response.json();
+    });
   }
-     
-  //filtering Server Data
-  static fetchReviewsById(id, callback) {
-    DBHelper.fetchReviews((error, reviews) => {
+
+
+function fetchReviewsById(id) {
+    fetchReviews((error, reviews) => {
       if (error) {
-        callback(error, null);
+        throw Error(response.statusText);
       } else {
         // Filter restaurants to have only given restaurant.id
         const results = reviews.filter(r => r.restaurant_id == id);
         console.log(results);
-        callback(null, results);
+        return results;
 
       }
     });
   }
+   /*function fetchReviewsById(id) {
+    // fetch all restaurants with proper error handling.
+const results = offlineData.filter(r => r.restaurant_id == id);
+          console.log('results:',results);
+    fetchReviews((error, reviews) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        const results = offlineData.filter(r => r.restaurant_id == id);
+        console.log('results:',results);
+        }
+      }
+    });
+  }*/
 
   //adding reviews to Server Data
-  static addAndPostReview(e) {
-  e.preventDefault();
-  const data = {
-    id: Date.now(),
-    restaurant_id: window.location.search.slice(4),
-    name: document.getElementById('name').value,
-    rating: document.getElementById('rating').value,
-    comments: document.getElementById('comments').value
-  };
-  console.log(data);
-  fillReviewsHTML([data]);
+  function addAndPostReview(e) {
+    e.preventDefault();
+    const data = {
+      //id: Date.now(),
+      restaurant_id: window.location.search.slice(4),
+      name: document.getElementById('name').value,
+      rating: document.getElementById('rating').value,
+      comments: document.getElementById('comments').value
+    };
+    
+    saveReviewDataLocally([data]);
+    //createReviewHTML([data]);
+    fillReviewsHTML([data]);
 
-  // TODO - save event data locally
-
-  const headers = new Headers({'Content-Type': 'application/json'});
-  const body = JSON.stringify(data);
-  return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
-    method: 'POST',
-    headers: headers,
-    body: body
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const body = JSON.stringify(data);
+    return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+      method: 'POST',
+      headers: headers,
+      body: body
+    });
+  }
+        
+  function getLocalReviewData() {
+  debugger
+  if (!('indexedDB' in window)) {return null;}
+  return dbPromise.then(db => {
+    debugger
+    const tx = db.transaction('reviews', 'readonly');
+    const store = tx.objectStore('reviews');
+    debugger
+    return store.getAll();
   });
 }
- 
 
+
+  function saveReviewDataLocally(reviews) {
+  if (!('indexedDB' in window)) {return null;}
+  return dbPromise.then(db => {
+
+    const tx = db.transaction('reviews', 'readwrite');
+    const reviewsStore = tx.objectStore('reviews');
+    return Promise.all(reviews.map(review=>reviewsStore.put(review)))
+    //return Promise.all(reviews.map(review => reviewsStore.put(review)))
+    .catch(() => {
+      tx.abort();
+      throw Error('Reviews were not added to the store');
+    });
+  });
 }
+
   /**
    * Adding Reviewsç Offline first, Bacground Sync
    * based on Build an offline-first, data-driven PWA (codeLab)
@@ -342,7 +406,9 @@ const dataSavedMessage = document.getElementById('data-saved');
 const saveErrorMessage = document.getElementById('save-error');
 const addReviewButton = document.getElementById('add-review-button');
 
-addReviewButton.addEventListener('click', DBHelper.addAndPostReview);
+window.onload=function(){
+addReviewButton.addEventListener('click', addAndPostReview);
+}
 
 Notification.requestPermission();
 
@@ -387,6 +453,7 @@ function getLastUpdated() {
 function setLastUpdated(date) {
   localStorage.setItem('lastUpdated', date);
 }
+
 
 
 

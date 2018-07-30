@@ -1,4 +1,5 @@
 let restaurant;
+let reviewsByRest;
 var map;
 
 /**
@@ -39,23 +40,29 @@ const fetchRestaurantFromURL = (callback) => {
     callback(error, null);
   } else {
     DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+      console.log('fetchrestaurant: ',restaurant);
       self.restaurant = restaurant;
       if (!restaurant) {
         console.error(error);
         return;
       }
-   
-      // NEW: call fetchreviewsbyID 
-    DBHelper.fetchReviewsById(id, (error, reviews) => {
-      self.reviews = reviews;
-      if (!reviews) {
+      //fetched allReviews filter by ID
+      debugger
+      fetchReviewsById(id, (error, reviewsByRest) => {
+      debugger
+      console.log('fetchReviews: ',reviewsByRest);
+      self.reviewsByRest = reviewsByRest;
+      
+      if (!reviewsByRest) {
         console.error(error);
         return;
       }
-    });
+      console.log('restaurant: ',restaurant);
+      console.log('reviewsByRest: ',reviewsByRest);
       fillRestaurantHTML();
       callback(null, restaurant)
-   });  
+    });  
+   });
   }
 }
 
@@ -81,8 +88,9 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
+
+
+  //fillReviewsHTML();
 }
 
 /**
@@ -109,24 +117,26 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  * Create all reviews HTML and add them to the webpage.
  */
  // change from self.restaurant.reviews to self.reviews -- clarify: two diff. tables reviews and restaurants or reviews is part of the restaurants
-const fillReviewsHTML = (reviews = self.reviews) => {
+  const fillReviewsHTML = (reviewsByRest = self.reviewsByRest) => {
+  console.log("recibido:" ,reviewsByRest);
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
-  title.innerHTML = 'Reviews';
-  container.appendChild(title);
+  //const title = document.createElement('h2');
+  //title.innerHTML = 'Reviews';
+  //container.appendChild(title);
 
-  if (!reviews) {
+  if (!reviewsByRest) {
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
     container.appendChild(noReviews);
     return;
   }
   const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
+  reviewsByRest.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
-}
+  }
+
 
 /**
  * Create review HTML and add it to the webpage.
@@ -138,8 +148,13 @@ const createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  /*date.innerHTML = review.createdAt;
+  li.appendChild(date);*/
+
+  const reviewDate = new Date(review.createdAt);
+  date.innerHTML = reviewDate.toDateString();
   li.appendChild(date);
+
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;

@@ -52,60 +52,22 @@
     <!-- Beginning reviews -->
     <section id="reviews-container">
       <!-- Creating a new review -->
-      <h2 id="newReview-title">Add a review</h2>
-      <br>
-      <form id="newReview-form">
-      <label for = "reviewer-name"> Your name: <br>
-      <input id="reviewer-name" type="text" name="name"><br>
-      <label for = "reviewer-name"> Your rating:
-      <select id="rating" name="rating" aria-label="rating selector">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-      <br>
-      <label for = "comment-text"> Your opinion on this restaurant: <br>
-      <textarea id ="comment-text" type="text" name="comments"> </textarea>
-      <br>
-      <input type="submit">
-      </form>
-      <!-- Past reviews -->
-      <ul id="reviews-list"></ul>
-    </section>
-    <!-- End reviews -->
-
-  <!-- Test -->
-
-  <section>
-
-      <h2>Current Events</h2>
-
-      <!-- hidden warnings are displayed dynamically -->
-      <p id="offline" class="message warn">You're offline and viewing stored data.</p>
-      <p id="no-data" class="message error">You're offline and local data is unavailable.</p>
-      <p id="data-saved" class="message success">Server data was saved for offline mode</p>
-      <p id="save-error" class="message error">Server data couldn't be saved offline :(</p>
-
-      <ul id="container" class="container">
-        <!-- items dynamically populated -->
-      </ul>
-
-    </section>
-
-    <section class="form-section">
+      <section class="form-section">
 
       <div class="card">
         <div class="card-title">
-          <h2>Add an Event</h2>
+          <h2>Add a Review</h2>
         </div>
         <div class="support-text">
           <form action="#" method="post">
             <div class="textfield">
-              <label for=name">Title</label>
+              <label for=name">Name</label>
               <input id="name" name="name"/>
             </div>
+           <!--  <div class="textfield">
+              <label for=date">Date</label>
+              <input id="createdAt" name="date"/>
+            </div> -->
             <select id="rating" name="rating" aria-label="rating selector">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -114,12 +76,12 @@
                 <option value="5">5</option>
             </select>
             <div class="textfield">
-              <label for="note">Note</label>
+              <label for="note">Comment</label>
               <input id="comments" name="comments"/>
             </div>
             <div class="card-action">
               <button id="add-review-button" type="submit" class="raised button ripple">
-                Add
+                Add a Review
               </button>
             </div>
           </form>
@@ -127,8 +89,23 @@
       </div>
 
     </section>
+      <!-- Past reviews -->
+      <section>
 
-    <!-- End test -->
+      <h2>Reviews</h2>
+
+      <!-- hidden warnings are displayed dynamically -->
+      <p id="offline" class="message warn">You're offline and viewing stored data.</p>
+      <p id="no-data" class="message error">You're offline and local data is unavailable.</p>
+      <p id="data-saved" class="message success">Server data was saved for offline mode</p>
+      <p id="save-error" class="message error">Server data couldn't be saved offline :(</p>
+
+      <ul id="reviews-list" class="container">
+        <!-- items dynamically populated -->
+      </ul>
+
+    </section>
+    <!-- End reviews -->
 
   </main>
   <!-- End main -->
