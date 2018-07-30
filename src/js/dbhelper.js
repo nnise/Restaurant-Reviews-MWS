@@ -247,22 +247,6 @@ class DBHelper {
     return marker;
   }
 
-
-  /*static fetchReviewsById(id, callback) {
-      fetchReviews((error, reviews) => {
-        if (error) {
-          callback(error, null);
-        } else {
-          // Filter restaurants to have only given restaurant.id
-          const results = reviews.filter(r => r.restaurant_id == id);
-          console.log(results);
-          callback(null, results);
-
-        }
-      });
-    }*/
-
-
 }
 
 
