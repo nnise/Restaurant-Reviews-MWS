@@ -46,25 +46,11 @@ const fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
-      //fetched allReviews filter by ID
-      debugger
-      fetchReviewsById(id, (error, reviewsByRest) => {
-      debugger
-      console.log('fetchReviews: ',reviewsByRest);
-      self.reviewsByRest = reviewsByRest;
-      
-      if (!reviewsByRest) {
-        console.error(error);
-        return;
-      }
-      console.log('restaurant: ',restaurant);
-      console.log('reviewsByRest: ',reviewsByRest);
       fillRestaurantHTML();
       callback(null, restaurant)
     });  
-   });
+   }
   }
-}
 
 /**
  * Create restaurant HTML and add it to the webpage

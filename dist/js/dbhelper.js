@@ -36,12 +36,12 @@ const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   }
 
   // checks if the objectStore Restaurants already exists, if not, creates one
-  if(!upgradeDb.objectStoreNames.contains('reviews')){
+  //if(!upgradeDb.objectStoreNames.contains('reviews')){
   //assigning the result of createObjectStore (object store object) to a variable to
   //be able to call createIndex on it.
-  const store = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
-  store.createIndex('restaurant', 'restaurant_id'); 
-  }
+  //const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
+  //reviewsStore.createIndex('restaurant', 'restaurant_id'); 
+  //}
 }); 
 
 
@@ -371,9 +371,9 @@ const results = offlineData.filter(r => r.restaurant_id == id);
   return dbPromise.then(db => {
     debugger
     const tx = db.transaction('reviews', 'readonly');
-    const store = tx.objectStore('reviews');
+    const reviewsStore = tx.objectStore('reviews');
     debugger
-    return store.getAll();
+    return reviewsStore.getAll();
   });
 }
 
@@ -384,13 +384,12 @@ const results = offlineData.filter(r => r.restaurant_id == id);
 
     const tx = db.transaction('reviews', 'readwrite');
     const reviewsStore = tx.objectStore('reviews');
-    return Promise.all(reviews.map(review=>reviewsStore.put(review)))
+    reviews.forEach(review=>reviewsStore.put(review))
     //return Promise.all(reviews.map(review => reviewsStore.put(review)))
-    .catch(() => {
+    }).catch(() => {
       tx.abort();
       throw Error('Reviews were not added to the store');
     });
-  });
 }
 
   /**

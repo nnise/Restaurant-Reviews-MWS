@@ -39,8 +39,8 @@ const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
   if(!upgradeDb.objectStoreNames.contains('reviews')){
   //assigning the result of createObjectStore (object store object) to a variable to
   //be able to call createIndex on it.
-  const store = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
-  store.createIndex('restaurant', 'restaurant_id'); 
+  const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'})
+  reviewsStore.createIndex('restaurant', 'restaurant_id'); 
   }
 }); 
 
@@ -383,14 +383,13 @@ const results = offlineData.filter(r => r.restaurant_id == id);
   return dbPromise.then(db => {
 
     const tx = db.transaction('reviews', 'readwrite');
-    const reviewsStore = tx.objectStore('reviews');
-    return Promise.all(reviews.map(review=>reviewsStore.put(review)))
+    const store = tx.objectStore('reviews');
+    reviews.forEach(review=>store.put(review))
     //return Promise.all(reviews.map(review => reviewsStore.put(review)))
-    .catch(() => {
+    }).catch(() => {
       tx.abort();
       throw Error('Reviews were not added to the store');
     });
-  });
 }
 
   /**
