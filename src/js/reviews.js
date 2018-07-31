@@ -1,26 +1,25 @@
   /**
-   * Adding Reviewsç Offline first, Bacground Sync
-   * based on Build an offline-first, data-driven PWA (codeLab)
+   * Adding Reviews, Offline first, Bacground Sync
+   * adaptation from Build an offline-first, data-driven PWA (codeLab)
    * https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#0
    */
 let reviewsByRest;
 loadReviewsOnNetworkFirst(self.restaurant_id);
 const id = getParameterByName('id');
 
-
-/**
-   * Fetch all reviews
+  
+  /**
+   * Checking Network connectivity and acting accordingly
    */
 //
 function loadReviewsOnNetworkFirst(id) {
-  //const endpointReviewsById = `${DBHelper.DATABASE_URL}/reviews`;
   debugger;
+  //fetches de data from the server
   getServerData()
-  //getServerData()
   //once the data is received the page and IndexedDB are updated
   .then(dataFromNetwork => {
     debugger
-    fillReviewsHTML(dataFromNetwork);
+    updateReviewsHTML(dataFromNetwork);
     debugger
     saveReviewDataLocally(dataFromNetwork)
     //when the data is successfully saved, a timestamp is stored and the user is
@@ -34,59 +33,59 @@ function loadReviewsOnNetworkFirst(id) {
     });
   }).catch(err => {
     console.log('Network requests have failed, this happens when offline');
-    /*getLocalReviewData()
+    //getServerData() was rejected and the catch method took over.
+    //the getLocalReviewData function retrieves local data from IndexedDB
+    getLocalReviewData()
     .then(offlineData => {
       if (!offlineData.length) {
+        //if there isn't local data saved, the user is alerted
         messageNoData();
       } else {
+        //local data is displayed on the page and the user is informed that the
+        //data might be outdated.
         messageOffline();
-        updateUI(offlineData);
+        updateReviewsHTML(offlineData);
       }
-    });*/
+    });
   });
 }
 
    /* Network functions */
   
-  //getting Server Data
-  function getServerData() {
-    return fetch(`${DBHelper.DATABASE_URL}/reviews`)
-    .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-      debugger
-      return response.json();
-    });
-  }
+//getting Server Data
+function getServerData() {
+  return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+  .then(response => {
+    if (!response.ok) {
+      throw Error(response.statusText);
+      }
+    debugger
+    return response.json();
+  });
+}
 
-  //adding reviews to Server Data
-  function addAndPostReview(e) {
-    e.preventDefault();
+//adding reviews to Server Data
+function addAndPostReview(e) {
+  e.preventDefault();
     const data = {
-      //id: Date.now(),
       restaurant_id: window.location.search.slice(4),
       name: document.getElementById('name').value,
       rating: document.getElementById('rating').value,
       comments: document.getElementById('comments').value
     };
-    
-    
-    //createReviewHTML([data]);
-    fillReviewsHTML([data]);
-    //keeps the local data up-to-date when user adds new events.
+    updateReviewsHTML([data]);
+    //keeps the local data up-to-date when user adds new reviews.
     saveReviewDataLocally([data]);
-
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(data);
     return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
       method: 'POST',
       headers: headers,
       body: body
-    });
-  }
+  });
+}
         
-  function getLocalReviewData() {
+function getLocalReviewData() {
   debugger
   if (!('indexedDB' in window)) {return null;}
   return dbPromise.then(db => {
@@ -98,11 +97,12 @@ function loadReviewsOnNetworkFirst(id) {
   });
 }
 
+ /* Local functions */
 
-//takes an array of object and add each object to the IndexeDB database.
+// this function takes an array of objects and add each object to the IndexeDB database.
 // The store.put happens inside a Promise.all which allows to catch an error and abort the transaction if any
 // of the put operations fail. This rolls back all the changes that happened in the transaction  - nothing will be added to the store
-  function saveReviewDataLocally(reviews) {
+function saveReviewDataLocally(reviews) {
   if (!('indexedDB' in window)) {return null;}
   return dbPromise.then(db => {
     debugger;
@@ -122,14 +122,15 @@ function loadReviewsOnNetworkFirst(id) {
   });
 }
 
-    /* HTML */
+
+/* HTML */
 
 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
  
-function fillReviewsHTML (reviewsByRest) {
+function updateReviewsHTML (reviewsByRest) {
     console.log("recibido:", reviewsByRest);
     const container = document.getElementById('reviews-container');
     const id = getParameterByName('id');
@@ -242,6 +243,3 @@ function getLastUpdated() {
 function setLastUpdated(date) {
   localStorage.setItem('lastUpdated', date);
 }
-
-
-

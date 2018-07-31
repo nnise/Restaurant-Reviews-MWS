@@ -66,11 +66,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/dbhelper.js",
-    "revision": "d0cfbff1a83d962eee5f84f30eaae607"
+    "revision": "780b07a300bc57351e33b4fb770d449b"
   },
   {
     "url": "js/idb.js",
-    "revision": "4993779518a4e949f8b9c276992ace82"
+    "revision": "b90e9ddd65b40734a44ad487bdbc92fc"
   },
   {
     "url": "js/main.js",
@@ -78,11 +78,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/restaurant_info.js",
-    "revision": "91e55fbd6de8d619b6e1b171a7d23091"
+    "revision": "72293dff60a00db0a6e42450a260795c"
   },
   {
     "url": "js/reviews.js",
-    "revision": "349e4e452309358ad9210950b260636a"
+    "revision": "c07423b7e9225ee0eea0c893dc750d45"
   },
   {
     "url": "restaurant.html",

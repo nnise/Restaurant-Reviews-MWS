@@ -1,5 +1,4 @@
 let restaurant;
-let reviewsByRest;
 var map;
 
 /**
@@ -74,9 +73,6 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-
-
-  //fillReviewsHTML();
 }
 
 /**
@@ -97,60 +93,6 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 
     hours.appendChild(row);
   }
-}
-
-/**
- * Create all reviews HTML and add them to the webpage.
- */
- // change from self.restaurant.reviews to self.reviews -- clarify: two diff. tables reviews and restaurants or reviews is part of the restaurants
-  const fillReviewsHTML = (reviewsByRest = self.reviewsByRest) => {
-  console.log("recibido:" ,reviewsByRest);
-  const container = document.getElementById('reviews-container');
-  //const title = document.createElement('h2');
-  //title.innerHTML = 'Reviews';
-  //container.appendChild(title);
-
-  if (!reviewsByRest) {
-    const noReviews = document.createElement('p');
-    noReviews.innerHTML = 'No reviews yet!';
-    container.appendChild(noReviews);
-    return;
-  }
-  const ul = document.getElementById('reviews-list');
-  reviewsByRest.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
-  container.appendChild(ul);
-  }
-
-
-/**
- * Create review HTML and add it to the webpage.
- */
-const createReviewHTML = (review) => {
-  const li = document.createElement('li');
-  const name = document.createElement('p');
-  name.innerHTML = review.name;
-  li.appendChild(name);
-
-  const date = document.createElement('p');
-  /*date.innerHTML = review.createdAt;
-  li.appendChild(date);*/
-
-  const reviewDate = new Date(review.createdAt);
-  date.innerHTML = reviewDate.toDateString();
-  li.appendChild(date);
-
-
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
-
-  const comments = document.createElement('p');
-  comments.innerHTML = review.comments;
-  li.appendChild(comments);
-
-  return li;
 }
 
 /**

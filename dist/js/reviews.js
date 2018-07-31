@@ -1,30 +1,29 @@
-
-createIndexedDB();
-loadReviewsOnNetworkFirst();
-
-Notification.requestPermission();
-
-
-function createIndexedDB() {
-  if (!('indexedDB' in window)) {return null;}
-  return idb.open('reviewsDB', 1, function(upgradeDb) {
-    if (!upgradeDb.objectStoreNames.contains('reviews')) {
-      const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
-      reviewsStore.createIndex('restaurant', 'restaurant_id', {unique: false});
-    }
-  });
-}
-
-/**
-   * Fetch all reviews
+  /**
+   * Adding Reviews, Offline first, Bacground Sync
+   * adaptation from Build an offline-first, data-driven PWA (codeLab)
+   * https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#0
    */
-//filtering Server Data
-//escribir como funcion
-  function loadReviewsOnNetworkFirst() {
-  fetchReviews()
+let reviewsByRest;
+loadReviewsOnNetworkFirst(self.restaurant_id);
+const id = getParameterByName('id');
+
+  
+  /**
+   * Checking Network connectivity and acting accordingly
+   */
+//
+function loadReviewsOnNetworkFirst(id) {
+  debugger;
+  //fetches de data from the server
+  getServerData()
+  //once the data is received the page and IndexedDB are updated
   .then(dataFromNetwork => {
-    fillReviewsHTML(dataFromNetwork);
+    debugger
+    updateReviewsHTML(dataFromNetwork);
+    debugger
     saveReviewDataLocally(dataFromNetwork)
+    //when the data is successfully saved, a timestamp is stored and the user is
+    //notified that the data is available for offline use.
     .then(() => {
       setLastUpdated(new Date());
       messageDataSaved();
@@ -34,13 +33,18 @@ function createIndexedDB() {
     });
   }).catch(err => {
     console.log('Network requests have failed, this happens when offline');
+    //getServerData() was rejected and the catch method took over.
+    //the getLocalReviewData function retrieves local data from IndexedDB
     getLocalReviewData()
     .then(offlineData => {
       if (!offlineData.length) {
+        //if there isn't local data saved, the user is alerted
         messageNoData();
       } else {
+        //local data is displayed on the page and the user is informed that the
+        //data might be outdated.
         messageOffline();
-        updateUI(offlineData);
+        updateReviewsHTML(offlineData);
       }
     });
   });
@@ -48,72 +52,40 @@ function createIndexedDB() {
 
    /* Network functions */
   
-  //getting Server Data
-  function fetchReviews() {
-    return fetch(`${DBHelper.DATABASE_URL}/reviews`)
-    .then(response => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-      debugger
-      return response.json();
-    });
-  }
-
-
-function fetchReviewsById(id) {
-    fetchReviews((error, reviews) => {
-     if (error) {
-        throw Error(response.statusText);
-      } else {
-        // Filter restaurants to have only given restaurant.id
-        const results = reviews.filter(r => r.restaurant_id == id);
-        console.log(results);
-        return results;
-
+//getting Server Data
+function getServerData() {
+  return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+  .then(response => {
+    if (!response.ok) {
+      throw Error(response.statusText);
       }
-    });
-  }
-   /*function fetchReviewsById(id) {
-    // fetch all restaurants with proper error handling.
-const results = offlineData.filter(r => r.restaurant_id == id);
-          console.log('results:',results);
-    fetchReviews((error, reviews) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        const results = offlineData.filter(r => r.restaurant_id == id);
-        console.log('results:',results);
-        }
-      }
-    });
-  }*/
+    debugger
+    return response.json();
+  });
+}
 
-  //adding reviews to Server Data
-  function addAndPostReview(e) {
-    e.preventDefault();
+//adding reviews to Server Data
+function addAndPostReview(e) {
+  e.preventDefault();
     const data = {
-      //id: Date.now(),
       restaurant_id: window.location.search.slice(4),
       name: document.getElementById('name').value,
       rating: document.getElementById('rating').value,
       comments: document.getElementById('comments').value
     };
-    
+    updateReviewsHTML([data]);
+    //keeps the local data up-to-date when user adds new reviews.
     saveReviewDataLocally([data]);
-    //createReviewHTML([data]);
-    fillReviewsHTML([data]);
-
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(data);
     return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
       method: 'POST',
       headers: headers,
       body: body
-    });
-  }
+  });
+}
         
-  function getLocalReviewData() {
+function getLocalReviewData() {
   debugger
   if (!('indexedDB' in window)) {return null;}
   return dbPromise.then(db => {
@@ -125,26 +97,102 @@ const results = offlineData.filter(r => r.restaurant_id == id);
   });
 }
 
+ /* Local functions */
 
-  function saveReviewDataLocally(reviews) {
+// this function takes an array of objects and add each object to the IndexeDB database.
+// The store.put happens inside a Promise.all which allows to catch an error and abort the transaction if any
+// of the put operations fail. This rolls back all the changes that happened in the transaction  - nothing will be added to the store
+function saveReviewDataLocally(reviews) {
   if (!('indexedDB' in window)) {return null;}
   return dbPromise.then(db => {
-
+    debugger;
     const tx = db.transaction('reviews', 'readwrite');
-    const store = tx.objectStore('reviews');
-    reviewsStore.forEach(review=>reviewsStore.put(review))
-    //return Promise.all(reviews.map(review => reviewsStore.put(review)))
-    }).catch(() => {
-      tx.abort();
-      throw Error('Reviews were not added to the store');
-    });
+    const reviewsStore = tx.objectStore('reviews');
+    //Only use Promise.all when there is more than 1 review
+    if (reviews.length > 1) {
+      return Promise.all(reviews.map(review => reviewsStore.put(review)))
+      .catch(() => {
+        tx.abort();
+        throw Error('Reviews were not added to the store');
+      });
+    }else{
+      reviewsStore.put(reviews);
+    }
+
+  });
 }
 
-  /**
-   * Adding Reviewsç Offline first, Bacground Sync
-   * based on Build an offline-first, data-driven PWA (codeLab)
-   * https://codelabs.developers.google.com/codelabs/workbox-indexeddb/index.html?index=..%2F..%2Findex#0
-   */
+
+/* HTML */
+
+
+/**
+ * Create all reviews HTML and add them to the webpage.
+ */
+ 
+function updateReviewsHTML (reviewsByRest) {
+    console.log("recibido:", reviewsByRest);
+    const container = document.getElementById('reviews-container');
+    const id = getParameterByName('id');
+    console.log('id:', id);
+    //const title = document.createElement('h2');
+    //title.innerHTML = 'Reviews';
+    //container.appendChild(title);
+
+    if (!reviewsByRest) {
+      const noReviews = document.createElement('p');
+      noReviews.innerHTML = 'No reviews yet!';
+      container.appendChild(noReviews);
+      return;
+    }
+    const ul = document.getElementById('reviews-list');
+    reviewsByRest.forEach(review => {
+      if (review.restaurant_id == window.location.search.slice(4)){
+        ul.appendChild(createReviewHTML(review));
+      }
+      
+    });
+    container.appendChild(ul);
+}
+
+
+/**
+ * Create review HTML and add it to the webpage.
+ */
+const createReviewHTML = (review) => {
+  const li = document.createElement('li');
+  const name = document.createElement('p');
+  name.innerHTML = review.name;
+  li.appendChild(name);
+
+  const date = document.createElement('p');
+  /*date.innerHTML = review.createdAt;
+  li.appendChild(date);*/
+
+  const reviewDate = new Date(review.createdAt);
+  date.innerHTML = reviewDate.toDateString();
+  li.appendChild(date);
+
+
+  const rating = document.createElement('p');
+  rating.innerHTML = `Rating: ${review.rating}`;
+  li.appendChild(rating);
+
+  const comments = document.createElement('p');
+  comments.innerHTML = review.comments;
+  li.appendChild(comments);
+
+  return li;
+}
+
+
+
+
+
+
+/**
+ * UI functions
+*/
 
 const container = document.getElementById('container');
 const offlineMessage = document.getElementById('offline');
@@ -158,11 +206,6 @@ addReviewButton.addEventListener('click', addAndPostReview);
 }
 
 Notification.requestPermission();
-
-
-  /**
-  /* UI functions
-  */
 
 
 function messageOffline() {
@@ -200,4 +243,3 @@ function getLastUpdated() {
 function setLastUpdated(date) {
   localStorage.setItem('lastUpdated', date);
 }
-
