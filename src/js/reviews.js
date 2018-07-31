@@ -78,6 +78,9 @@ function addAndPostReview(e) {
     saveReviewDataLocally([data]);
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(data);
+    //***error in console: reviews.js:81 OPTIONS http://localhost:1337/reviews 0 ()
+    //****addAndPostReview @ reviews.js:81
+    //***restaurant.html:1 Uncaught (in promise) TypeError: Failed to fetch
     return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
       method: 'POST',
       headers: headers,
