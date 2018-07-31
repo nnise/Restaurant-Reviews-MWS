@@ -21,9 +21,12 @@ if (workbox) {
     });
   };
 
-  // Adding the workbox-background-sync module: users can save thier 
+  // Adding the workbox-background-sync module: users can save their 
   //offline changes to the server (in the background) when they come back online
+  //BackgroundSync plugin initialisation
   const bgSyncPlugin = new workbox.backgroundSync.Plugin(
+    //BackgroundSync creates a Queue, represented by an IndexedDB database, 
+    //that is used to store failed requests
     'dashboardr-queue',
     {
       callbacks: {
@@ -33,12 +36,14 @@ if (workbox) {
     }
   );
 
+  //plugin added to the configuration of a handler
   const networkWithBackgroundSync = new workbox.strategies.NetworkOnly({
     plugins: [bgSyncPlugin],
   });
 
+  //a Route is created and registered using this handler, and the app's endpont
   workbox.routing.registerRoute(
-    /\/api\/add/,
+    'http://localhost:1337/reviews/',
     networkWithBackgroundSync,
     'POST'
   );
