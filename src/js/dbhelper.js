@@ -14,36 +14,43 @@ const altTags = {
 
 
   /**
-   * Opening & setting up a database using IndexedDB (name, version, updgradeCallback)
-   and assign it to a promise
+   * IndexedDB
    */
-const dbPromise = idb.open("restaurant-reviews-dtbs", 1 , (upgradeDb) => {
-  if (!navigator.serviceWorker) {
-    //this method resolves to a database object
-    return Promise.resolve();
-  }
 
+function createIndexedDB() {
   //checking for IndexedDB support
   if (!("indexedDB" in window)) {
   console.log("This browser doesn\"t support IndexedDB");
   return;
   }
+  //Opening & setting up a database using IndexedDB (name, version, updgradeCallback)
+  //and assign it to a promise
+  return idb.open('restaurant-reviews-dtbs', 1, function(upgradeDb) {
+    switch (upgradeDb.oldVersion) {
+      case 0:
+      //this allows the switch block to execute when the database is first created
+      case 1:
+      // checks if the objectStore Restaurants already exists, if not, creates one
+      if(!upgradeDb.objectStoreNames.contains('restaurants')){
+      //assigning the result of createObjectStore (object store object) to a variable to
+      //be able to call createIndex on it.
+      const restaurantsStore = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
+      restaurantsStore.createIndex('id', 'id', {unique: true}); 
+      }
+      case 2:
+      // checks if the objectStore reviews already exists, if not, creates one
+      if (!upgradeDb.objectStoreNames.contains('reviews')) {
+      //assigning the result of createObjectStore (object store object) to a variable to
+      //be able to call createIndex on it.
+      const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id', autoIncrement: true});
+      reviewsStore.createIndex('restaurant', 'restaurant_id', {unique: false}); 
+      console.log('Creating restaurant_id index on object store reviews');reviewsStore.createIndex('restaurant_id', 'restaurant_id', {unique: false});
+      }
+    }
+  });
+}
 
-  // checks if the objectStore Restaurants already exists, if not, creates one
-  if(!upgradeDb.objectStoreNames.contains('restaurants')){
-  const restaurantsStore = upgradeDb.createObjectStore('restaurants', {keyPath: 'id'})
-  restaurantsStore.createIndex('id', 'id', {unique: true}); 
-  }
-
-  // checks if the objectStore Restaurants already exists, if not, creates one
-  //if(!upgradeDb.objectStoreNames.contains('reviews')){
-  //assigning the result of createObjectStore (object store object) to a variable to
-  //be able to call createIndex on it.
-  //const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id', autoIncrement: true})
-  //reviewsStore.createIndex('restaurant', 'restaurant_id', {unique: false}); 
-  //}
-}); 
-
+const dbPromise =createIndexedDB();
 
 class DBHelper {
   /**
