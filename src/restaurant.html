@@ -50,8 +50,11 @@
     <!-- end restaurant -->
 
     <!-- Beginning reviews -->
-    <section id="reviews-container">
-      <!-- Creating a new review -->
+    
+    <!-- Creating a new review -->
+
+    <div id="reviews-container">
+      
       <section class="form-section">
 
       <div class="card">
@@ -64,17 +67,16 @@
               <label for=name">Name</label>
               <input id="name" name="name"/>
             </div>
-           <!--  <div class="textfield">
-              <label for=date">Date</label>
-              <input id="createdAt" name="date"/>
-            </div> -->
-            <select id="rating" name="rating" aria-label="rating selector">
+           <div class="textfield">
+              <select id="rating" name="rating" aria-label="rating selector">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
+            </div>
+            
             <div class="textfield">
               <label for="note">Comment</label>
               <input id="comments" name="comments"/>
@@ -90,7 +92,7 @@
 
     </section>
       <!-- Past reviews -->
-      <section>
+    <section>
 
       <h2>Reviews</h2>
 
@@ -105,6 +107,8 @@
       </ul>
 
     </section>
+
+    </div>
     <!-- End reviews -->
 
   </main>

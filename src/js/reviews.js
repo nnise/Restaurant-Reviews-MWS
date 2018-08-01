@@ -54,7 +54,7 @@ function loadReviewsOnNetworkFirst(id) {
   
 //getting Server Data
 function getServerData() {
-  return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+  return fetch(`${DBHelper.DATABASE_URL}/reviews/`)
   .then(response => {
     if (!response.ok) {
       throw Error(response.statusText);
@@ -65,6 +65,8 @@ function getServerData() {
 }
 
 //adding reviews to Server Data
+//the preventDefault() Event method cancels the event if it is cancelable
+//that means that the default action that belongs to the event will not occur.
 function addAndPostReview(e) {
   e.preventDefault();
     const data = {
@@ -73,15 +75,15 @@ function addAndPostReview(e) {
       rating: document.getElementById('rating').value,
       comments: document.getElementById('comments').value
     };
-    updateReviewsHTML([data]);
+    updateReviewsHTML(data);
     //keeps the local data up-to-date when user adds new reviews.
-    saveReviewDataLocally([data]);
+    saveReviewDataLocally(data);
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(data);
     //***error in console: reviews.js:81 OPTIONS http://localhost:1337/reviews 0 ()
     //****addAndPostReview @ reviews.js:81
     //***restaurant.html:1 Uncaught (in promise) TypeError: Failed to fetch
-    return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+    return fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
       method: 'POST',
       headers: headers,
       body: body
@@ -133,23 +135,23 @@ function saveReviewDataLocally(reviews) {
  * Create all reviews HTML and add them to the webpage.
  */
  
-function updateReviewsHTML (reviewsByRest) {
-    console.log("recibido:", reviewsByRest);
-    const container = document.getElementById('reviews-container');
-    const id = getParameterByName('id');
-    console.log('id:', id);
+function updateReviewsHTML (reviews = self.restaurant.reviews) {
+    console.log("recibido:", reviews);
+    //const container = document.getElementById('reviews-container');
+    //const id = getParameterByName('id');
+    //console.log('id:', id);
     //const title = document.createElement('h2');
     //title.innerHTML = 'Reviews';
     //container.appendChild(title);
 
-    if (!reviewsByRest) {
+    if (!reviews) {
       const noReviews = document.createElement('p');
       noReviews.innerHTML = 'No reviews yet!';
       container.appendChild(noReviews);
       return;
     }
     const ul = document.getElementById('reviews-list');
-    reviewsByRest.forEach(review => {
+    reviews.forEach(review => {
       if (review.restaurant_id == window.location.search.slice(4)){
         ul.appendChild(createReviewHTML(review));
       }
