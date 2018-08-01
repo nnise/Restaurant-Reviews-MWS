@@ -76,6 +76,7 @@ function addAndPostReview(e) {
       rating: document.getElementById('rating').value,
       comments: document.getElementById('comments').value
     }];
+    createReviewHTML(data);
     updateReviewsHTML(data);
     //keeps the local data up-to-date when user adds new reviews.
     saveReviewDataLocally(data);
@@ -164,8 +165,8 @@ const createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  /*date.innerHTML = review.createdAt;
-  li.appendChild(date);*/
+  //date.innerHTML = review.createdAt;
+  //li.appendChild(date);
 
   const reviewDate = new Date(review.createdAt);
   date.innerHTML = reviewDate.toDateString();
