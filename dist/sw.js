@@ -65,7 +65,80 @@ if (workbox) {
     })
   );
 
-  workbox.precaching.precacheAndRoute([]);
+  workbox.precaching.precacheAndRoute([
+  {
+    "url": "css/styles.css",
+    "revision": "61d33cbb22299007a63d9259ac9720ea"
+  },
+  {
+    "url": "img/1.webp",
+    "revision": "a03796419758ab3c530b237f3234ccf7"
+  },
+  {
+    "url": "img/10.webp",
+    "revision": "85dcd06ba7bd61700cd20dde8dc7a5d9"
+  },
+  {
+    "url": "img/2.webp",
+    "revision": "a63d98048f9d6a220f08cc16c69da296"
+  },
+  {
+    "url": "img/3.webp",
+    "revision": "2bb2b423876087794ac217330ad24c0e"
+  },
+  {
+    "url": "img/4.webp",
+    "revision": "3b56c420dd45fc06899a0d6484c5de3b"
+  },
+  {
+    "url": "img/5.webp",
+    "revision": "c8f2b6c38aec3fee34efb7cc549fbd6b"
+  },
+  {
+    "url": "img/6.webp",
+    "revision": "d422e446ed66b5eeff69b3e0ed7ab9a8"
+  },
+  {
+    "url": "img/7.webp",
+    "revision": "675523dfcba4b4d82651518942577fc9"
+  },
+  {
+    "url": "img/8.webp",
+    "revision": "6f82d34a05a72255b6f84428b8f2223c"
+  },
+  {
+    "url": "img/9.webp",
+    "revision": "df66f8663eea33c2a177197c103a2149"
+  },
+  {
+    "url": "index.html",
+    "revision": "17593de7d4800bcc146d59974f4e8227"
+  },
+  {
+    "url": "js/dbhelper.js",
+    "revision": "780b07a300bc57351e33b4fb770d449b"
+  },
+  {
+    "url": "js/idb.js",
+    "revision": "b90e9ddd65b40734a44ad487bdbc92fc"
+  },
+  {
+    "url": "js/main.js",
+    "revision": "9579775ec57ffb90291063a575c2d5d1"
+  },
+  {
+    "url": "js/restaurant_info.js",
+    "revision": "72293dff60a00db0a6e42450a260795c"
+  },
+  {
+    "url": "js/reviews.js",
+    "revision": "b42050cbcd5191e1f1ae4090c11a99eb"
+  },
+  {
+    "url": "restaurant.html",
+    "revision": "b171d77f51cc213a2579fbb97b2f4e33"
+  }
+]);
 } else {
   console.log(`Boo! Workbox didn't load 😬`);
 }

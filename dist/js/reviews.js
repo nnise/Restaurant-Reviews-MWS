@@ -25,6 +25,7 @@ function loadReviewsOnNetworkFirst(id) {
     //when the data is successfully saved, a timestamp is stored and the user is
     //notified that the data is available for offline use.
     .then(() => {
+      debugger
       setLastUpdated(new Date());
       messageDataSaved();
     }).catch(err => {
@@ -54,7 +55,7 @@ function loadReviewsOnNetworkFirst(id) {
   
 //getting Server Data
 function getServerData() {
-  return fetch(`${DBHelper.DATABASE_URL}/reviews`)
+  return fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=`+window.location.search.slice(4))
   .then(response => {
     if (!response.ok) {
       throw Error(response.statusText);
@@ -65,28 +66,29 @@ function getServerData() {
 }
 
 //adding reviews to Server Data
+//the preventDefault() Event method cancels the event if it is cancelable
+//that means that the default action that belongs to the event will not occur.
 function addAndPostReview(e) {
   e.preventDefault();
-    const data = {
-      restaurant_id: window.location.search.slice(4),
+    const data = [{
+      restaurant_id: parseInt(window.location.search.slice(4)),
       name: document.getElementById('name').value,
       rating: document.getElementById('rating').value,
       comments: document.getElementById('comments').value
-    };
-    updateReviewsHTML([data]);
+    }];
+    updateReviewsHTML(data);
     //keeps the local data up-to-date when user adds new reviews.
-    saveReviewDataLocally([data]);
+    saveReviewDataLocally(data);
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(data);
-    //***error in console: reviews.js:81 OPTIONS http://localhost:1337/reviews 0 ()
-    //****addAndPostReview @ reviews.js:81
-    //***restaurant.html:1 Uncaught (in promise) TypeError: Failed to fetch
-    return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+    return fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
       method: 'POST',
       headers: headers,
       body: body
   });
 }
+
+/* Local functions */
         
 function getLocalReviewData() {
   debugger
@@ -100,29 +102,22 @@ function getLocalReviewData() {
   });
 }
 
- /* Local functions */
+
 
 // this function takes an array of objects and add each object to the IndexeDB database.
 // The store.put happens inside a Promise.all which allows to catch an error and abort the transaction if any
 // of the put operations fail. This rolls back all the changes that happened in the transaction  - nothing will be added to the store
 function saveReviewDataLocally(reviews) {
+  console.log("reviews to save:", reviews);
   if (!('indexedDB' in window)) {return null;}
   return dbPromise.then(db => {
     debugger;
     const tx = db.transaction('reviews', 'readwrite');
     const reviewsStore = tx.objectStore('reviews');
-    //Only use Promise.all when there is more than 1 review
-    if (reviews.length > 1) {
-      return Promise.all(reviews.map(review => reviewsStore.put(review)))
-      .catch(() => {
-        tx.abort();
-        throw Error('Reviews were not added to the store');
-      });
-    }else{
-      reviewsStore.put(reviews);
-    }
-
-  });
+    reviews.forEach(review => reviewsStore.put(review))
+  }).catch(() => {
+      throw Error ('Reviews were not added to the store')
+  })
 }
 
 
@@ -133,23 +128,23 @@ function saveReviewDataLocally(reviews) {
  * Create all reviews HTML and add them to the webpage.
  */
  
-function updateReviewsHTML (reviewsByRest) {
-    console.log("recibido:", reviewsByRest);
+function updateReviewsHTML (reviews = self.restaurant.reviews) {
+    console.log("recibido:", reviews);
     const container = document.getElementById('reviews-container');
-    const id = getParameterByName('id');
-    console.log('id:', id);
+    //const id = getParameterByName('id');
+    //console.log('id:', id);
     //const title = document.createElement('h2');
     //title.innerHTML = 'Reviews';
     //container.appendChild(title);
 
-    if (!reviewsByRest) {
+    if (!reviews) {
       const noReviews = document.createElement('p');
       noReviews.innerHTML = 'No reviews yet!';
       container.appendChild(noReviews);
       return;
     }
     const ul = document.getElementById('reviews-list');
-    reviewsByRest.forEach(review => {
+    reviews.forEach(review => {
       if (review.restaurant_id == window.location.search.slice(4)){
         ul.appendChild(createReviewHTML(review));
       }
