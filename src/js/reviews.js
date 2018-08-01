@@ -114,18 +114,10 @@ function saveReviewDataLocally(reviews) {
     debugger;
     const tx = db.transaction('reviews', 'readwrite');
     const reviewsStore = tx.objectStore('reviews');
-    //Only use Promise.all when there is more than 1 review
-    if (reviews.length > 1) {
-      return Promise.all(reviews.map(review => reviewsStore.put(review)))
-        .catch(() => {
-        tx.abort();
-        throw Error('Reviews were not added to the store');
-        });
-    }else{
-      reviewsStore.put(reviews);
-    }
-
-  });
+    reviews.forEach(review => reviewsStore.put(review))
+  }).catch(() => {
+      throw Error ('Reviews were not added to the store')
+  })
 }
 
 
