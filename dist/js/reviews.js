@@ -72,6 +72,7 @@ function addAndPostReview(e) {
   e.preventDefault();
     const data = [{
       restaurant_id: parseInt(window.location.search.slice(4)),
+      createdAt: Date.now(),
       name: document.getElementById('name').value,
       rating: document.getElementById('rating').value,
       comments: document.getElementById('comments').value
@@ -164,10 +165,8 @@ const createReviewHTML = (review) => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  /*date.innerHTML = review.createdAt;
-  li.appendChild(date);*/
-
   const reviewDate = new Date(review.createdAt);
+  //adds format to Date on database
   date.innerHTML = reviewDate.toDateString();
   li.appendChild(date);
 

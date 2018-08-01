@@ -132,11 +132,11 @@ if (workbox) {
   },
   {
     "url": "js/reviews.js",
-    "revision": "b42050cbcd5191e1f1ae4090c11a99eb"
+    "revision": "e5afe46b54250c6e82d243f82fffb7fa"
   },
   {
     "url": "restaurant.html",
-    "revision": "b171d77f51cc213a2579fbb97b2f4e33"
+    "revision": "e475bcefa45863cb7fbdb82e1c197f72"
   }
 ]);
 } else {
