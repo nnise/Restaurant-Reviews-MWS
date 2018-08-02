@@ -11,11 +11,11 @@ const altTags = {
   10:"empty espace in cold colors with a metal bar surrounded by white chairs"
 }
 
-
-
+let favoriteButton;
   /**
    * IndexedDB
    */
+
 
 function createIndexedDB() {
   //checking for IndexedDB support
@@ -81,7 +81,7 @@ class DBHelper {
         return restaurantsStore.getAll()
       })
       .then((restaurants) => {
-        //verifying the amount of restaurants
+        //verifying the existence of restaurants
         if(restaurants.length) {
           callback(null,restaurants) 
         } else {
@@ -101,11 +101,21 @@ class DBHelper {
             restaurants.forEach((restaurant,index) => {
               if(restaurant.id) {
                 restaurant.alt = altTags[restaurant.id]
+                //console.log(restaurant.alt);
+    //             const button = document.getElementById('fav-button');  
+
+    //             favoriteButton.onClick = function (){
+    // DBHelper.updateFavorites();
+    // console.log(favoriteButton.value);
+    // debugger;}
+
+
+
               }
            })
           console.log(restaurants);
 
-          //opens Database and updates altTags info to each resturant with the putMethod
+          //opens Database and updates altTags info to each restaurant with the putMethod
           dbPromise.then((db) => {
               debugger;
               const tx = db.transaction('restaurants', 'readwrite');
@@ -254,7 +264,20 @@ class DBHelper {
     return marker;
   }
 
+
+  static updateFavorite(restaurantID, isFavorite){
+    console.log('change value to: ', isFavorite);
+    fetch(`${DBHelper.DATABASE_URL}/restaurants/${restaurantID}/?is_favorite=${isFavorite}`, {method: 'PUT'})
+        dbPromise
+        .then((db) => {
+          const tx = db.transaction('restaurants', 'readwrite');
+          const restaurantsStore = tx.objectStore('restaurants');
+          restaurantsStore.get(restaurantID)
+            .then(restaurant => {
+              restaurant.is_favorite = isFavorite;
+              restaurantsStore.put(restaurant);
+            });
+        })
+  }
+
 }
-
-
-

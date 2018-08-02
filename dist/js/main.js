@@ -5,23 +5,6 @@ var map
 var markers = []
 
 
-
-/**
- * register service worker
-**//*
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(registration => {
-        console.log(`Service Worker registered! Scope: ${registration.scope}`);
-      })
-      .catch(err => {
-        console.log(`Service Worker registration failed: ${err}`);
-      });
-  });
-}
-*/
-
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -182,12 +165,26 @@ createRestaurantHTML = (restaurant) => {
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.setAttribute('aria-label', 'restaurant: ' + restaurant.name);
   image.setAttribute('alt', 'Photo of ' + restaurant.name + ' in ' + restaurant.neighborhood);
-
   li.append(image);
 
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
+
+
+  //create favorite Button in each restaurant Card and adds functionality
+  const favoriteButton = document.createElement('button');
+  favoriteButton.classList.add ('fav-button');
+  favoriteButton.innerHTML = '☆';
+  //onClick changes the favorie status
+  favoriteButton.onclick = function(){
+    const currentState = !restaurant.is_favorite;
+    DBHelper.updateFavorite(restaurant.id, currentState);
+    restaurant.is_favorite = !restaurant.is_favorite;
+    emoticonVisualChange(favoriteButton, restaurant.is_favorite)
+  }
+  emoticonVisualChange(favoriteButton, restaurant.is_favorite)
+  li.appendChild(favoriteButton);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
@@ -206,6 +203,19 @@ createRestaurantHTML = (restaurant) => {
   return li
 }
 
+emoticonVisualChange = (emoticon, favorite) => {
+  if (!favorite) {
+    emoticon.classList.remove('isAFavorite');
+    emoticon.classList.add('isNotAFavorite');
+    emoticon.setAttribute('aria-label', 'set as a favorite restaurant');
+  } else {
+    emoticon.classList.remove('isNotAFavorite');
+    emoticon.classList.add('isAFavorite');
+    emoticon.setAttribute('aria-label', 'remove from my favorite restaurants');
+  }
+
+}
+
 /**
  * Add markers for current restaurants to the map.
  */
@@ -219,3 +229,5 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
+

@@ -561,6 +561,36 @@ input {
 }
 
 
+/* ====================== Add to Favorites ====================== */
+
+.fav-button {
+  background-color: white;
+  border: none;
+  align-self: flex-start;
+  font-size: 25px;
+  background: white;
+  height: 40px;
+  width: 40px;
+}
+
+.isAFavorite {
+  color: #d73030;
+}
+
+.isAFavorite:hover {
+  color: #d73030;
+}
+
+.isNotAFavorite {
+  color: #4c4c4c;
+}
+
+.isNotAFavorite:hover {
+  color: #4c4c4c;
+}
+
+/* ====================== Media queries ====================== */
+
 @media screen and (max-width: 550px) {
 
 .inside #map-container, #map-container, #map{
@@ -782,3 +812,5 @@ input {
     font-size: 12pt;
     text-transform: uppercase;
   }
+
+
