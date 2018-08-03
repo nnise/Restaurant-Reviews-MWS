@@ -160,16 +160,43 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
+ 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.setAttribute('aria-label', 'restaurant: ' + restaurant.name);
   image.setAttribute('alt', 'Photo of ' + restaurant.name + ' in ' + restaurant.neighborhood);
+  //https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+  let lazyImageObserver;
+  const options = {
+    threshold: 0.1
+  }
+    if ("IntersectionObserver" in window) {
+      lazyImageObserver = new IntersectionObserver(callback, options);
+      lazyImageObserver.observe(image);
+      
+      }else{
+        console.log('This browser does not support IntersectionObserver');
+        loadImage(image);
+      }  
+  
+  const loadImage = image => {
+    image.className = 'restaurant-img';
+    image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  }
+ function callback (entries, lazyImageObserver){
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > 0){
+            loadImage(entry.target);
+            lazyImageObserver.unobserve(entry.target);
+          }
+        })
+  }
+
+  
+  debugger;
+    
   li.append(image);
 
-  const name = document.createElement('h2');
-  name.innerHTML = restaurant.name;
-  li.append(name);
+  
 
 
   //create favorite Button in each restaurant Card and adds functionality
@@ -185,6 +212,10 @@ createRestaurantHTML = (restaurant) => {
   }
   emoticonVisualChange(favoriteButton, restaurant.is_favorite)
   li.appendChild(favoriteButton);
+
+  const name = document.createElement('h2');
+  name.innerHTML = restaurant.name;
+  li.append(name);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;

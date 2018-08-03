@@ -159,32 +159,60 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
-
+ 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.setAttribute('aria-label', 'restaurant: ' + restaurant.name);
   image.setAttribute('alt', 'Photo of ' + restaurant.name + ' in ' + restaurant.neighborhood);
+  //https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+  //Detecting visibility of images through the Intersection Observer API, here the images are the target
+  let lazyImageObserver;
+  const options = {
+    // it has a threshold for each percentage point of visibility;
+    threshold: 0.1
+  }
+  if ("IntersectionObserver" in window) {
+    lazyImageObserver = new IntersectionObserver(callback, options);
+    lazyImageObserver.observe(image);  
+    }else{
+    console.log('This browser does not support IntersectionObserver');
+    loadImage(image);
+  }  
+  
+  const loadImage = image => {
+    image.className = 'restaurant-img';
+    image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  }
+
+  function callback (entries, lazyImageObserver){
+    entries.forEach(entry => {
+      if (entry.intersectionRatio > 0){
+        loadImage(entry.target);
+        lazyImageObserver.unobserve(entry.target);
+        }
+    })
+  }
   li.append(image);
 
-  const name = document.createElement('h2');
-  name.innerHTML = restaurant.name;
-  li.append(name);
+  
 
 
   //create favorite Button in each restaurant Card and adds functionality
   const favoriteButton = document.createElement('button');
   favoriteButton.classList.add ('fav-button');
-  favoriteButton.innerHTML = '☆';
-  //onClick changes the favorie status
+  favoriteButton.innerHTML = `✰`;
+  //onClick changes the is_favorite status to the opposite value and changes the icon accordingly
   favoriteButton.onclick = function(){
     const currentState = !restaurant.is_favorite;
     DBHelper.updateFavorite(restaurant.id, currentState);
     restaurant.is_favorite = !restaurant.is_favorite;
-    emoticonVisualChange(favoriteButton, restaurant.is_favorite)
+    iconFavVisualChange(favoriteButton, restaurant.is_favorite)
   }
-  emoticonVisualChange(favoriteButton, restaurant.is_favorite)
+  iconFavVisualChange(favoriteButton, restaurant.is_favorite)
   li.appendChild(favoriteButton);
+
+  const name = document.createElement('h2');
+  name.innerHTML = restaurant.name;
+  li.append(name);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
@@ -195,7 +223,8 @@ createRestaurantHTML = (restaurant) => {
   li.append(address);
 
   const more = document.createElement('a');
-  more.innerHTML = 'View Details';
+  more.innerHTML = '+ Details';
+  more.className = 'raised button ripple';
   more.href = DBHelper.urlForRestaurant(restaurant);
   more.setAttribute('aria-label', 'more about ' + restaurant.name);
   li.append(more)
@@ -203,15 +232,15 @@ createRestaurantHTML = (restaurant) => {
   return li
 }
 
-emoticonVisualChange = (emoticon, favorite) => {
+iconFavVisualChange = (iconFav, favorite) => {
   if (!favorite) {
-    emoticon.classList.remove('isAFavorite');
-    emoticon.classList.add('isNotAFavorite');
-    emoticon.setAttribute('aria-label', 'set as a favorite restaurant');
+    iconFav.classList.remove('isAFavorite');
+    iconFav.classList.add('isNotAFavorite');
+    iconFav.setAttribute('aria-label', 'set as a favorite restaurant');
   } else {
-    emoticon.classList.remove('isNotAFavorite');
-    emoticon.classList.add('isAFavorite');
-    emoticon.setAttribute('aria-label', 'remove from my favorite restaurants');
+    iconFav.classList.remove('isNotAFavorite');
+    iconFav.classList.add('isAFavorite');
+    iconFav.setAttribute('aria-label', 'remove from my favorite restaurants');
   }
 
 }

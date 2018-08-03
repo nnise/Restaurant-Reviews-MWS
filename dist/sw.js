@@ -68,7 +68,7 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
   {
     "url": "css/styles.css",
-    "revision": "4fd6e84920b784460f9aa94b2bc018ef"
+    "revision": "103ff6450627f10e9c9002b705facd18"
   },
   {
     "url": "img/1.webp",
@@ -124,7 +124,7 @@ if (workbox) {
   },
   {
     "url": "js/main.js",
-    "revision": "1c4eb808324cdb54347abc383715740d"
+    "revision": "bd691bf3112a61825e164563262a8941"
   },
   {
     "url": "js/restaurant_info.js",
