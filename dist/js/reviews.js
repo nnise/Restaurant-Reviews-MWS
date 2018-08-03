@@ -160,6 +160,7 @@ function updateReviewsHTML (reviews = self.restaurant.reviews) {
  */
 const createReviewHTML = (review) => {
   const li = document.createElement('li');
+  li.className = 'card';
   const name = document.createElement('p');
   name.innerHTML = review.name;
   li.appendChild(name);

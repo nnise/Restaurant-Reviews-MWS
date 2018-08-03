@@ -68,7 +68,7 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
   {
     "url": "css/styles.css",
-    "revision": "103ff6450627f10e9c9002b705facd18"
+    "revision": "1d69af08fec44c0ea6de32cc0c0a67fe"
   },
   {
     "url": "img/1.webp",
@@ -124,7 +124,7 @@ if (workbox) {
   },
   {
     "url": "js/main.js",
-    "revision": "bd691bf3112a61825e164563262a8941"
+    "revision": "53cfae42425473af9e7f9002e2901a9e"
   },
   {
     "url": "js/restaurant_info.js",
@@ -132,11 +132,11 @@ if (workbox) {
   },
   {
     "url": "js/reviews.js",
-    "revision": "e5afe46b54250c6e82d243f82fffb7fa"
+    "revision": "c1ce18b771e1b5b2c7acb7eac132e0e4"
   },
   {
     "url": "restaurant.html",
-    "revision": "e475bcefa45863cb7fbdb82e1c197f72"
+    "revision": "4488afd40cf618f69d7b9febba5306df"
   }
 ]);
 } else {
