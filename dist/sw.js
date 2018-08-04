@@ -14,40 +14,6 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
 
-
-  const showNotification = () => {
-    self.registration.showNotification('Background sync success!', {
-      body: '🎉`🎉`🎉`'
-    });
-  };
-
-  // Adding the workbox-background-sync module: users can save their 
-  //offline changes to the server (in the background) when they come back online
-  //BackgroundSync plugin initialisation
-  const bgSyncPlugin = new workbox.backgroundSync.Plugin(
-    //BackgroundSync creates a Queue, represented by an IndexedDB database, 
-    //that is used to store failed requests
-    'restaurant-reviews-dtbs-queue',
-    {
-      callbacks: {
-        queueDidReplay: showNotification
-        // other types of callbacks could go here
-      }
-    }
-  );
-
-  //plugin added to the configuration of a handler
-  const networkWithBackgroundSync = new workbox.strategies.NetworkOnly({
-    plugins: [bgSyncPlugin],
-  });
-
-  //a Route is created and registered using this handler, and the app's endpont
-  workbox.routing.registerRoute(
-    new RegExp('http://localhost:1337/reviews/'),
-    networkWithBackgroundSync,
-    'POST'
-  );
-
 //https://developers.google.com/web/tools/workbox/modules/workbox-strategies
   workbox.routing.registerRoute(
     new RegExp('restaurant.html(.*)'),
@@ -64,7 +30,6 @@ if (workbox) {
     cacheableResponse: {statuses: [0, 200]}
     })
   );
-
   workbox.precaching.precacheAndRoute([
   {
     "url": "css/styles.css",
@@ -139,11 +104,39 @@ if (workbox) {
     "revision": "4488afd40cf618f69d7b9febba5306df"
   }
 ]);
-} else {
+  
+
+const showNotification = () => {
+    self.registration.showNotification('Background sync success!', {
+      body: '��`🎉`��`'
+    });
+};
+
+  // Adding the workbox-background-sync module: users can save their 
+  //offline changes to the server (in the background) when they come back online
+  //BackgroundSync plugin initialisation
+  const bgSyncPlugin = new workbox.backgroundSync.Plugin(
+    //BackgroundSync creates a Queue, represented by an IndexedDB database, 
+    //that is used to store failed requests
+    'restaurant-reviews-dtbs-queue',
+    {
+      callbacks: {
+        queueDidReplay: showNotification
+        // other types of callbacks could go here
+      }
+    }
+  );
+  //plugin added to the configuration of a handler
+  const networkWithBackgroundSync = new workbox.strategies.NetworkOnly({
+    plugins: [bgSyncPlugin],
+  });
+  //a Route is created and registered using this handler, and the app's endpoint
+  workbox.routing.registerRoute(
+    'http://localhost:1337/reviews/',
+    networkWithBackgroundSync,
+    'POST'
+  );
+
+  } else {
   console.log(`Boo! Workbox didn't load 😬`);
 }
-
-
-
-
-
