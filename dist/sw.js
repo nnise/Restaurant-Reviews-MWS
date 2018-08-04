@@ -33,7 +33,7 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
   {
     "url": "css/styles.css",
-    "revision": "1d69af08fec44c0ea6de32cc0c0a67fe"
+    "revision": "8e1f2f85118a9015f85637edd34bc04e"
   },
   {
     "url": "img/1.webp",
@@ -97,11 +97,11 @@ if (workbox) {
   },
   {
     "url": "js/reviews.js",
-    "revision": "a3c19f5b2f0c8ec263cbecfb37be4535"
+    "revision": "c9d4472e43ed90d112fa3aa402ef1316"
   },
   {
     "url": "restaurant.html",
-    "revision": "3b8848a0d573bae2aaf0137482fa5d3f"
+    "revision": "9505d2ea189feb9433c7e26257f3174b"
   }
 ]);
   

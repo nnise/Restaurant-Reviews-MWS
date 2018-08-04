@@ -8,7 +8,7 @@ body,td,th,p{
 	line-height: 1.5;
 }
 p{
-  font-size: 9pt;
+  font-size: 12pt;
 }
 
 body {
@@ -20,10 +20,10 @@ body {
 ul, li {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
-	color: #333;
+	color: #941c01;
 }
 a {
-	color: orange;
+  color: orange;
 	text-decoration: none;
 }
 a:hover, a:focus {
@@ -126,13 +126,13 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
+    color: #333;
     text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-    color: #01447e;
+    color: #15547E;
     text-decoration: underline;
 }
 /* ====================== Map ====================== */
@@ -158,7 +158,7 @@ nav h1 a {
   font-size: 11pt;
   color: white;
   height: 35px;
-  background-color: #ed412d;
+  background-color: #ad1f00;
   border: none;
   align-items: center;
 }
@@ -226,10 +226,10 @@ nav h1 a {
 
 #restaurants-list li h2 {
   background-color: #fff;
-  color: #15547e;
+  color: #ad1f00;
   font-family: Arial,sans-serif;
-  font-size: 14pt;
-  font-weight: 200;
+  font-size: 16pt;
+  font-weight: 800;
   letter-spacing: 0;
   line-height: 1.3;
   text-transform: uppercase;
@@ -241,7 +241,7 @@ nav h1 a {
   padding: 0 30px 0px;
 }
 #restaurants-list li a {
-  background-color: orange;
+  background-color: #14547d !important;
   color: #fff;
   display: block;
   font-size: 10pt;
@@ -296,18 +296,18 @@ nav h1 a {
 
 }
 #restaurant-name {
-  color: #f18200;
+  color: #ad1f00;
   font-family: Arial,sans-serif;
-  font-size: 14pt;
-  font-weight: 200;
+  font-size: 16pt;
+  font-weight: 800;
   letter-spacing: 0;
-  margin: 15px 0 15px;
+  line-height: 1.3;
   text-transform: uppercase;
-  line-height: 1.1;
+  padding: 0 30px 5px;
 }
 #restaurant-img {
 	width: 100%;
-  /*border-radius: 15px 50px 30px 5px;*/
+  border-radius: 40px 0px 0px 0px;
 }
 #restaurant-address {
   font-size: 12pt;
@@ -345,9 +345,9 @@ nav h1 a {
   margin-top: 100px;
 }
 #reviews-container h2 {
-  color: #f58500;
-  font-size: 24pt;
-  font-weight: 300;
+  color: #14547c;
+  font-size: 14pt;
+  font-weight: 800;
   letter-spacing: -1px;
   padding-bottom: 1pt;
 }
@@ -357,16 +357,17 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-  border: 2px solid #f3f3f3;
+  border: 2px solid #252831;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
+  padding: 20px;
   position: relative;
   width: 90%;
 }
 #reviews-list li p {
+  font-size: 16px;
   margin: 0 0 10px;
   word-wrap: break-word;
 }
@@ -374,15 +375,24 @@ nav h1 a {
   color: #666;
 }
 
+.review-offline{
+  border: 2px solid #FF9800 !important; 
+}
+
 /* ====================== Add Review ====================== */
 
   /*--------------------- Reviews form To adapt after test -------------------*/
 
 .message {
-  box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
   display: none;
-  padding: 15px;
+  padding: 20px;
+  position: relative;
   width: 90%;
+  margin: 0 0 30px;
+  overflow: hidden;
+  position: relative;
+  justify-content: center;
+
 
 }
 
@@ -420,7 +430,7 @@ form {
 }
 
 .card {
-  background-color: #fff;
+  background-color: #14547d;
   box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
   display: flex;
   flex-flow: row wrap;
@@ -428,6 +438,18 @@ form {
   padding: 0;
   width: 90%;
 }
+
+.card-offline {
+  background-color: #fff;
+  box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
+  display: flex;
+  flex-flow: row wrap;
+  margin: 5px 20px;
+  padding: 0;
+  width: 90%;
+  border: 2px solid #04a9f4;
+}
+
 
 .card-name {
   align-items: center;
@@ -453,8 +475,6 @@ form {
 }
 
 input {
-  border: 5px solid;
-  color: #757575;
   display: block;
   font-family: "Roboto","Helvetica","Arial",sans-serif;
   font-size: 16px;
@@ -468,7 +488,7 @@ input {
 }
 
 .support-text {
-  color: rgba(0,0,0,.54);
+  color: #fff;
   font-size: 1rem;
   line-height: 18px;
   overflow: hidden;
@@ -487,6 +507,31 @@ input {
   max-width: 90%;
   min-width: 80%;
   padding: 10px 0;
+}
+
+textarea{
+  width: 100%;
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 5px;
+  font-size: 18px;
+  background: #f2f2f2;
+  box-sizing: border-box;
+
+
+}
+
+.comments{
+  width: 100%;
+  border: 2px solid darkgrey;
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 5px;
+  font-size: 18px;
+  background: #f2f2f2;
+  box-sizing: border-box;
+
+
 }
 
 .card-action {
@@ -543,9 +588,9 @@ input {
 }
 
 .raised {
-  background: #15547e;
+  background: #ffa500;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
-  color: #fff;
+  color: #252831;
 }
 
 @keyframes ripple {
@@ -575,7 +620,7 @@ input {
   background-color: white;
   border: none;
   align-self: flex-start;
-  font-size: 25px;
+  font-size: 30px;
   background: white;
   height: 40px;
   width: 40px;
@@ -583,19 +628,19 @@ input {
 }
 
 .isAFavorite {
-  color: #ffa600;
+  color: #AD1F00;
 }
 
 .isAFavorite:hover {
-  color: #ffa600;
+  color: #AD1F00;
 }
 
 .isNotAFavorite {
-  color: #ccc;
+  color: #969696;
 }
 
 .isNotAFavorite:hover {
-  color: #ccc;
+  color: #969696;
 }
 
 
@@ -727,7 +772,7 @@ input {
   width: 145px;
   }
 
- .inside #map-container, #map-container{
+ /*.inside #map-container, #map-container{
     height: 100vh;
     width: 50%;
 
@@ -737,7 +782,7 @@ input {
     width: 50%;
     height: 100vh;
 
-  }
+  }*/
   
   #restaurant-container{
     width: calc(50% - 4em);
@@ -806,7 +851,7 @@ input {
 
 @media screen and (min-width: 1024px) {
 
-  .inside #map-container, #map-container{
+  .inside #map-container{
     height: 100vh;
     width: 30%;
   }
@@ -815,16 +860,16 @@ input {
   font-size: 1.5em;
   border: none;
 }
-  /*index.html*/
+  /*index.html
   #list-container{
     width: 70%;
     height: 100vh;
-  }
+  }*/
 
   #restaurant-container {
     height: 800px;
     /*overflow: scroll;*/
-    width: calc(35% - 100px);
+    width: calc(35% - 60px);
     padding: 0.5em 1em;
     border-bottom: 0px;
 }
@@ -871,7 +916,7 @@ input {
   }
 
   #reviews-container {
-    width: calc(35% - 100px);
+    width: calc(35% - 60px);
     height: 100vh;
     overflow-y: scroll;
   }

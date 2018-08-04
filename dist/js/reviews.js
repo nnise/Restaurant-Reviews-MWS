@@ -163,15 +163,18 @@ function updateReviewsHTML (reviews = self.restaurant.reviews) {
  */
 const createReviewHTML = (review) => {
   const li = document.createElement('li');
-  li.className = 'card';
+  //UI indicator for the user to know that the current review view is offline
+  if (!navigator.onLine) {
+    li.classList.add("review-offline");
+  }
+
   const name = document.createElement('p');
-  name.innerHTML = review.name;
+  name.innerHTML = `Added by: ${review.name}`;
   li.appendChild(name);
 
   const date = document.createElement('p');
-  const reviewDate = new Date(review.createdAt);
   //adds format to Date on database
-  date.innerHTML = reviewDate.toDateString();
+  date.innerHTML= `On: ${new Date(review.createdAt).toDateString()}`;
   li.appendChild(date);
 
 
@@ -180,7 +183,7 @@ const createReviewHTML = (review) => {
   li.appendChild(rating);
 
   const comments = document.createElement('p');
-  comments.innerHTML = review.comments;
+  comments.innerHTML = `Comments: ${review.comments}`;
   li.appendChild(comments);
 
   return li;

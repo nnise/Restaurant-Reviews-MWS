@@ -53,20 +53,19 @@
     
     <!-- Creating a new review -->
 
-    <section id="reviews-container">  
+    <section id="reviews-container"> 
+      <h2>Reviews</h2>
 
       <div class="form-section">
       <div class="card">
-        <div class="card-title">
-          <h2>Add a Review</h2>
-        </div>
         <div class="support-text">
           <form id="review-form" action="#" method="post">
             <div class="textfield">
-              <label for="name">Name</label>
+              <label for="name">Name </label>
               <input id="name" name="name"/>
             </div>
            <div class="textfield">
+            <label for="rating">Rating </label>
               <select id="rating" name="rating" aria-label="rating selector">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -77,9 +76,8 @@
             </div>
             
             <div class="textfield">
-              <label for="note">Comment</label>
-              <br>
-              <textarea id="comments" name="comments" maxlength="250" rows="10"></textarea>
+              <label for="comments">Comment </label> 
+              <textarea id="comments" name="comments" maxlength="250" rows="6"></textarea>
             </div>
             <div class="card-action">
               <button id="add-review-button" type="submit" class="raised button ripple">
@@ -93,9 +91,6 @@
     </div>
       <!-- Past reviews -->
     
-
-      <h2>Reviews</h2>
-
       <!-- hidden warnings are displayed dynamically -->
       <p id="offline" class="message warn">You're offline and viewing stored data.</p>
       <p id="no-data" class="message error">You're offline and local data is unavailable.</p>
