@@ -80,6 +80,8 @@ function addAndPostReview(e) {
     updateReviewsHTML(data);
     //keeps the local data up-to-date when user adds new reviews.
     saveReviewDataLocally(data);
+    //cleans form after submited
+    document.getElementById('review-form').reset();
     const headers = new Headers({'Content-Type': 'application/json'});
     const body = JSON.stringify(data);
     return fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
@@ -147,7 +149,8 @@ function updateReviewsHTML (reviews = self.restaurant.reviews) {
     const ul = document.getElementById('reviews-list');
     reviews.forEach(review => {
       if (review.restaurant_id == window.location.search.slice(4)){
-        ul.appendChild(createReviewHTML(review));
+      	//new review added is the first on the list
+        ul.insertBefore(createReviewHTML(review), ul.firstChild);
       }
       
     });

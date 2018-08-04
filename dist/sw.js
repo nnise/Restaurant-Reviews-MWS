@@ -97,11 +97,11 @@ if (workbox) {
   },
   {
     "url": "js/reviews.js",
-    "revision": "c1ce18b771e1b5b2c7acb7eac132e0e4"
+    "revision": "a3c19f5b2f0c8ec263cbecfb37be4535"
   },
   {
     "url": "restaurant.html",
-    "revision": "4488afd40cf618f69d7b9febba5306df"
+    "revision": "3b8848a0d573bae2aaf0137482fa5d3f"
   }
 ]);
   
