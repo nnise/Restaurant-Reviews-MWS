@@ -73,7 +73,7 @@ height:auto;
 }
 
 #footer {
-  background-color: #444;
+  background-color: #252830;
   color: #E0E0E0;
   font-size: 8pt;
   letter-spacing: 1px;
@@ -151,7 +151,7 @@ nav h1 a {
   }*/
 
 #map.show {
-  height: 100vh !important;
+  height: 70vh !important;
 }
 
 #mapButton {
@@ -274,9 +274,7 @@ nav h1 a {
   width: 50%;*/
 }
 .inside #map {
-  background-color: #ccc;
-  width: 100%;
-  background: blue none repeat scroll 0 0;
+  background: #ccc none repeat scroll 0 0;
   height: 100%;
   right: 0;
   top: 100px;
@@ -386,13 +384,14 @@ nav h1 a {
 
 .message {
   display: none;
-  padding: 20px;
+  padding: 10px;
   position: relative;
   width: 90%;
-  margin: 0 0 30px;
+  margin: 25px 0 25px;
   overflow: hidden;
   position: relative;
   justify-content: center;
+  font-size: 10pt;
 
 
 }

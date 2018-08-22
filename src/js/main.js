@@ -76,7 +76,7 @@ const fillCuisinesHTML = (cuisines = self.cuisines) => {
 /**
  * Initialize leaflet, called from HTML.
  */
-window.initMap = () => {
+initMap = () => {
   self.newMap = L.map('map',{
     zoom: 12,
     center: [40.722216, -73.987501],
@@ -100,6 +100,10 @@ window.initMap = () => {
 
   mapElement.classList.add('show');
   showMapButton.remove();
+
+  if ( this.newMap ) {
+    this.newMap.invalidateSize();
+  }
   
 
 }
