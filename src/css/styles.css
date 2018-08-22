@@ -137,10 +137,11 @@ nav h1 a {
 }
 /* ====================== Map ====================== */
 #map {
-
-  background-color: #ccc;
+ 
   height: 0px;
+  background-color: #ccc;
   width: 100%;
+  
 }
 
 
@@ -149,7 +150,7 @@ nav h1 a {
     height: 0px;
   }*/
 
-.show {
+#map.show {
   height: 100vh !important;
 }
 
