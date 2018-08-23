@@ -23,7 +23,7 @@ To run the Local Development API Server
 [web app](#run-the-webApp)
 
 
-# Local Development API Server
+## Local Development API Server
 
 Development local API Server
 Location of server = /server Server depends on node.js LTS Version: v6.11.2 , npm, and sails.js Please make sure you have these installed before proceeding forward.
@@ -33,16 +33,16 @@ Great, you are ready to proceed forward; awesome!
 Let's start with running commands in your terminal, known as command line interface (CLI)
 
 Install project dependancies
-# npm i
+### npm i
 Install Sails.js globally
-# npm i sails -g
+### npm i sails -g
 Start the server
-# node server
+### node server
 You should now have access to your API server environment
 debug: Environment : development debug: Port : 1337
 
 
-# Run the WebAPP
+## Run the WebAPP
 
 For running the website, be sure that 
 
