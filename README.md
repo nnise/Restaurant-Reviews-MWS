@@ -19,11 +19,11 @@ You have to run two shell windows on your machine, one acting as the server and 
 
 To run the Local Development API Server
 
-[node server](#anchors-in-markdown)
+[node server](#local-development-api-server)
 
 
 
-#anchors-in-markdown
+# Local Development API Server
 
 For running the website, be sure that 
 
