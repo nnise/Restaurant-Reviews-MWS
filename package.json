@@ -27,6 +27,7 @@
   "dependencies": {
     "del": "^3.0.0",
     "file-system": "^2.2.2",
+    "lodash": "^4.17.10",
     "npm": "^6.1.0"
   }
 }
