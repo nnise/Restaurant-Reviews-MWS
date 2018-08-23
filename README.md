@@ -17,10 +17,8 @@ Accessibility 94<br>
 
 You have to run two shell windows on your machine, one acting as the server and the other as the client.
 
-To run the Local Development API Server
-
-[node server](#local-development-api-server)
-[web app](#run-the-webApp)
+1. [Local Development API Server](#local-development-api-server)
+2. [Web app](#run-the-webApp)
 
 
 ## Local Development API Server
@@ -54,7 +52,6 @@ In a terminal, check the version of Python you have: `python -V`. If you have Py
 
 ### Note about ES6
 
-Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
-
+Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code.
 
 
