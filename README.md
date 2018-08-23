@@ -11,7 +11,7 @@ Progressive Web App 99<br>
 Performance score 92<br>
 Accessibility 94<br>
 
-[[https://github.com/nnise/mws-restaurant-stage-3/blob/master/prjctImgs/Screen%20Shot%202018-08-22%20at%2022.46.16.png|alt=auditResults]]
+[[https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-22%20at%2022.46.16.png|alt=auditResults]]
 
 ### How to run this application?
 
