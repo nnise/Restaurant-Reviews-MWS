@@ -7,9 +7,6 @@ Users are allowed to create their own reviews for each restaurant and mark their
 
 
 The scores of this project in the Lighthouse audit are:
-Progressive Web App 99<br>
-Performance score 92<br>
-Accessibility 94<br>
 
 ![alt text](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-22%20at%2022.46.16.png)
 
