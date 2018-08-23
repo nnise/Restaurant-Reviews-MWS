@@ -20,10 +20,29 @@ You have to run two shell windows on your machine, one acting as the server and 
 To run the Local Development API Server
 
 [node server](#local-development-api-server)
-
+[web app] (#run-the-webApp)
 
 
 # Local Development API Server
+
+Development local API Server
+Location of server = /server Server depends on node.js LTS Version: v6.11.2 , npm, and sails.js Please make sure you have these installed before proceeding forward.
+
+Great, you are ready to proceed forward; awesome!
+
+Let's start with running commands in your terminal, known as command line interface (CLI)
+
+Install project dependancies
+# npm i
+Install Sails.js globally
+# npm i sails -g
+Start the server
+# node server
+You should now have access to your API server environment
+debug: Environment : development debug: Port : 1337
+
+
+# Run the WebAPP
 
 For running the website, be sure that 
 
@@ -31,9 +50,7 @@ For running the website, be sure that
 
 In a terminal, check the version of Python you have: `python -V`. If you have Python 2.x, spin up the server with `python -m SimpleHTTPServer 8000` (or some other port, if port 8000 is already in use.) For Python 3.x, you can use `python3 -m http.server 8000`. If you don't have Python installed, navigate to Python's [website](https://www.python.org/) to download and install the software.
 
-2. With your server running, visit the site: `http://localhost:8000`, and look around for a bit to see what the current experience looks like.
-3. Explore the provided code, and make start making a plan to implement the required features in three areas: responsive design, accessibility and offline use.
-4. Write code to implement the updates to get this site on its way to being a mobile-ready website.
+2. With your server running, visit the site: `http://localhost:8000/dist`
 
 ### Note about ES6
 
