@@ -1,21 +1,30 @@
-# Mobile Web Specialist Certification Course
+# Restaurant Reviews
 ---
-#### _Three Stage Course Material Project - Restaurant Reviews_
+With this project I became a certified Mobile Web Specialist thanks to the Udacity-Google EMEA Scholarship 2018.
 
-## Project ADDENDUM:
- This repository is using [leafletjs](https://leafletjs.com/) with [Mapbox](https://www.mapbox.com/) jpg tiles optimized with quality:70.
-You need to replace <your MAPBOX API KEY HERE> with token from [Mapbox](https://www.mapbox.com/), and you can check the [pricing](https://www.mapbox.com/pricing/): free and no credit card required.
- ---
+This is a functional mobile-ready web application that includes standard accesibility features, is reponsive on different sized displays and is accessible for screen reader use. The application uses Service Worker technology and Background Sync to create a semless offline experience for users.
+Users are allow to create their own reviews for each restaurant and mark their favorites.
 
-## Project Overview: Stage 1
 
-For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
+The scores of this project in the Lighthouse audit are:
+Progressive Web App 99
+Performance score 92
+Accessibility 94
 
-### Specification
 
-You have been provided the code for a restaurant reviews website. The code has a lot of issues. It’s barely usable on a desktop browser, much less a mobile device. It also doesn’t include any standard accessibility features, and it doesn’t work offline at all. Your job is to update the code to resolve these issues while still maintaining the included functionality. 
+### How to run this application?
 
-### What do I do from here?
+You have to run two shell windows on your machine, one acting as the server and the other as the client.
+
+To run the Local Development API Server
+
+[create an anchor](#anchors-in-markdown)
+
+node server
+
+
+
+For running the website, be sure that 
 
 1. In this folder, start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer. 
 
