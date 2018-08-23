@@ -3,13 +3,14 @@
 With this project I became a certified Mobile Web Specialist thanks to the Udacity-Google EMEA Scholarship 2018.
 
 This is a functional mobile-ready web application that includes standard accesibility features, is reponsive on different sized displays and is accessible for screen reader use. The application uses Service Worker technology and Background Sync to create a semless offline experience for users.
-Users are allow to create their own reviews for each restaurant and mark their favorites.
+Users are allowed to create their own reviews for each restaurant and mark their favorites.
 
 
 The scores of this project in the Lighthouse audit are:
-Progressive Web App 99
-Performance score 92
-Accessibility 94
+Progressive Web App 99<br>
+Performance score 92<br>
+Accessibility 94<br>
+
 
 
 ### How to run this application?
@@ -18,11 +19,11 @@ You have to run two shell windows on your machine, one acting as the server and 
 
 To run the Local Development API Server
 
-[create an anchor](#anchors-in-markdown)
-
-node server
+[node server](#anchors-in-markdown)
 
 
+
+#anchors-in-markdown
 
 For running the website, be sure that 
 
