@@ -23,12 +23,11 @@ You have to run two shell windows on your machine, one acting as the server and 
 
 ## Local Development API Server
 
-Development local API Server
 Location of server = /server Server depends on [node.js LTS Version: v6.11.2](https://nodejs.org/en/download/), [npm](https://www.npmjs.com/get-npm), and [sails.js](https://sailsjs.com/) Please make sure you have these installed before proceeding forward.
 
-Great, you are ready to proceed forward; awesome!
+Now you are ready to proceed forward!
 
-Let's start with running commands in your terminal, known as command line interface (CLI)
+Let's start with running commands in your terminal
 
 Install project dependancies
 ### npm i
@@ -49,6 +48,9 @@ For running the website, be sure that
 In a terminal, check the version of Python you have: `python -V`. If you have Python 2.x, spin up the server with `python -m SimpleHTTPServer 8000` (or some other port, if port 8000 is already in use.) For Python 3.x, you can use `python3 -m http.server 8000`. If you don't have Python installed, navigate to Python's [website](https://www.python.org/) to download and install the software.
 
 2. With your server running, visit the site: `http://localhost:8000/dist`
+
+### Leaflet.js and Mapbox
+This repository uses leafletjs with Mapbox. You need to replace <your MAPBOX API KEY HERE> with a token from Mapbox. Mapbox is free to use, and does not require any payment information.
 
 ### Note about ES6
 
