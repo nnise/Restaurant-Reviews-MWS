@@ -2,6 +2,8 @@
 ---
 With this project I became a certified Mobile Web Specialist thanks to the Udacity-Google EMEA Scholarship 2018.
 
+![All restaurants screen with map hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2013.21.39.png)
+
 This is a functional mobile-ready web application that includes standard accesibility features, is reponsive on different sized displays and is accessible for screen reader use. The application uses Service Worker technology and Background Sync to create a semless offline experience for users.
 Users are allowed to create their own reviews for each restaurant and mark their favorites.
 
@@ -52,13 +54,4 @@ This repository uses leafletjs with Mapbox. You need to replace <your MAPBOX API
 ### Note about ES6
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code.
-
-
-![All restaurants screen with map hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2013.21.39.png)
-
-![Restaurant Detail Page with Form and old Reviews](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2013.04.08.png)
-
-![Mobile View when Map is hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2016.52.13.png)
-
-![Mobile View when Map is shown](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2016.52.22.png)
 
