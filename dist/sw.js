@@ -33,7 +33,7 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
   {
     "url": "css/styles.css",
-    "revision": "8443aea122cee5992318279c383f7a62"
+    "revision": "f6f1268f46e6f7efec2c07125848bfba"
   },
   {
     "url": "img/1.webp",
