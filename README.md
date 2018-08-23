@@ -8,7 +8,7 @@ Users are allowed to create their own reviews for each restaurant and mark their
 
 The scores of this project in the Lighthouse audit are:
 
-![alt text](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-22%20at%2022.46.16.png)
+![Lighthouse Audit results](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-22%20at%2022.46.16.png)
 
 ### How to run this application?
 
@@ -53,4 +53,12 @@ This repository uses leafletjs with Mapbox. You need to replace <your MAPBOX API
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code.
 
+
+![All restaurants screen with map hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2013.21.39.png)
+
+![Restaurant Detail Page with Form and old Reviews](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2013.04.08.png)
+
+![Mobile View when Map is hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2016.52.13.png)
+
+![Mobile View when Map is shown](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2016.52.22.png)
 
