@@ -1,13 +1,12 @@
 # Restaurant Reviews
 ---
-With this project I became a certified Mobile Web Specialist thanks to the Udacity-Google EMEA Scholarship 2018.
+With this project I became a certified [Mobile Web Specialist](https://confirm.udacity.com/S34CCRNZ) thanks to the Udacity-Google EMEA Scholarship 2018.
 
 ![All restaurants screen with map hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/desktopHome.png)
 
 ![Restauran details sample page](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/restaurantDetails.png)
 
-This is a functional mobile-ready web application that includes standard accesibility features, is reponsive on different sized displays and is accessible for screen reader use. The application uses Service Worker technology and Background Sync to create a semless offline experience for users.
-Users are allowed to create their own reviews for each restaurant and mark their favorites.
+This is a functional mobile-ready web application that includes standard accessibility features, is responsive on different sized displays and is accessible for screen reader users. The application uses Service Worker technology and Background Sync to create a seamless offline experience for users. Users are allowed to create their own reviews for each restaurant and mark their favourites.
 
 ![Mobile Home screen with hidden and shown map](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/mobileViews.jpg)
 
