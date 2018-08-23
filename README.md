@@ -20,7 +20,7 @@ You have to run two shell windows on your machine, one acting as the server and 
 To run the Local Development API Server
 
 [node server](#local-development-api-server)
-[web app] (#run-the-webApp)
+[web app](#run-the-webApp)
 
 
 # Local Development API Server
