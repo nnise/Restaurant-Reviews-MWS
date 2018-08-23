@@ -2,15 +2,18 @@
 ---
 With this project I became a certified Mobile Web Specialist thanks to the Udacity-Google EMEA Scholarship 2018.
 
-![All restaurants screen with map hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-23%20at%2013.21.39.png)
+![All restaurants screen with map hidden](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/desktopHome.png)
+
+![Restauran details sample page](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/restaurantDetails.png)
 
 This is a functional mobile-ready web application that includes standard accesibility features, is reponsive on different sized displays and is accessible for screen reader use. The application uses Service Worker technology and Background Sync to create a semless offline experience for users.
 Users are allowed to create their own reviews for each restaurant and mark their favorites.
 
+![Mobile Home screen with hidden and shown map](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/mobileViews.jpg)
 
 The scores of this project in the Lighthouse audit are:
 
-![Lighthouse Audit results](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/Screen%20Shot%202018-08-22%20at%2022.46.16.png)
+![Lighthouse Audit results](https://github.com/nnise/Restaurant-Reviews-MWS/blob/master/prjctImgs/auditResults.png)
 
 ### How to run this application?
 
