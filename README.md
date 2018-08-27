@@ -24,7 +24,7 @@ You have to run two shell windows on your machine, one acting as the server and 
 
 ## Local Development API Server
 
-First clone or download this [repo](https://github.com/udacity/mws-restaurant-stage-2)
+First clone or download this [repo](https://github.com/udacity/mws-restaurant-stage-3)
 
 Location of server = /server Server depends on [node.js LTS Version: v6.11.2](https://nodejs.org/en/download/), [npm](https://www.npmjs.com/get-npm), and [sails.js](https://sailsjs.com/) Please make sure you have these installed before proceeding forward.
 
