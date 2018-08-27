@@ -145,12 +145,6 @@ nav h1 a {
   
 }
 
-
-/*#map-container{
-    width: 100%;
-    height: 0px;
-  }*/
-
 #map.show {
   height: 70vh !important;
 }
@@ -210,13 +204,10 @@ nav h1 a {
 }
 #restaurants-list li {
   background-color: #fff;
-  /*border: 2px solid #ccc;*/
   font-family: Arial,sans-serif;
   margin: 15px;
   border-radius: 40px 0px 0px 0px;
-  /*min-height: 380px;*/
   text-align: left;
-  /*width: 200px;*/
 }
 #restaurants-list .restaurant-img {
   background-color: #f3f3f3;
@@ -268,11 +259,7 @@ nav h1 a {
   flex-wrap: wrap;
 }
 .inside #map-container {
-  /*background: blue none repeat scroll 0 0;
-  height: 100%;
-  right: 0;
-  top: 100px;
-  width: 50%;*/
+
 }
 .inside #map {
   background: #ccc none repeat scroll 0 0;
@@ -282,14 +269,6 @@ nav h1 a {
   width: 100%;
 
 }
-
-/*.inside #map {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  max-height: 700px;
-  max-width: 100%;
-}*/
 
 .inside #footer {
   width: 100%;
@@ -329,15 +308,13 @@ nav h1 a {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 2em;
-   /*width: 50%;*/
   position: relative;
 }
 
 #restaurant-container{
-  top: 100px;
-  /*background-color: #f3f3f3;*/
-  
+  top: 100px;  
 }
+
 #reviews-container {
   margin-top: 100px;
 }
@@ -432,8 +409,6 @@ form {
   background-color: #14547d;
   box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
   display: flex;
-  /*flex-flow: row wrap;*/
-/*  margin: 5px 20px;*/
   padding: 0;
   width: 100%;
 }
@@ -443,7 +418,6 @@ form {
   box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
   display: flex;
   flex-flow: row wrap;
-/*  margin: 5px 20px;*/
   padding: 0;
   width: 100%;
   border: 2px solid #04a9f4;
@@ -653,14 +627,6 @@ textarea{
     position: relative;
   }
 
-/*.inside
-
-  #map-container, #map-container,{
-    height: 70vh;
-    width: 100%;
-    position: relative;
-
-  }*/
   #restaurant-container, #reviews-container{
     width: 100%;
     padding: 0.8em 2em;
@@ -690,18 +656,8 @@ textarea{
 
 @media screen and (min-width: 586px) {
 
-  /*.#map{
-    height: 70vh !important;
-    width: 100%;
-    position: relative;
-
-  }*/
-
   .inside #map-container, #map-container{
-    /*height: 70vh;*/
     width: 100%;
-    /*position: relative;*/
-
   }
 
   #list-container{
@@ -709,11 +665,7 @@ textarea{
     overflow-y: auto;
   }
   
-  /*#restaurant-container{
-    width: 100%;
-    padding: 10px 10px;
-  }
-*/
+
   #restaurants-list {
     display: flex;
     flex-wrap: wrap;
@@ -724,7 +676,6 @@ textarea{
 
   #restaurants-list li {
     width: 271px;
-    /*width: calc(50% - 30px);*/
     height: 400px;
     margin: 10px 5px 10px;
   }
@@ -779,13 +730,6 @@ textarea{
     height: 100%;
   }
 
-
-
-  /*#list-container{
-    width: 50%;
-    height: 100vh;
-
-  }*/
   
   #restaurant-container{
     width: calc(50% - 4em);
@@ -808,7 +752,6 @@ textarea{
   #restaurants-list li {
     margin: 5px;
     text-align: left;
-    /*width: calc(50% - 10px);*/
     height: 480px;
     width: 340px;
     overflow: hidden;
@@ -866,15 +809,9 @@ textarea{
   font-size: 1.5em;
   border: none;
 }
-  /*index.html
-  #list-container{
-    width: 70%;
-    height: 100vh;
-  }*/
 
   #restaurant-container {
     height: 800px;
-    /*overflow: scroll;*/
     width: calc(35% - 60px);
     padding: 0.5em 1em;
     border-bottom: 0px;
@@ -890,7 +827,6 @@ textarea{
 
  #restaurants-list li {
     text-align: left;
-    /*width: calc(50% - 10px);*/
     height: 472px;
     width: 310px;
     overflow: hidden;
