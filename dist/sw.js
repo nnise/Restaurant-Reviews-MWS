@@ -101,7 +101,7 @@ if (workbox) {
   },
   {
     "url": "restaurant.html",
-    "revision": "18b601c1ae5a172eb2a7e5552cbb4d69"
+    "revision": "ab6a29194f3e2baa022138dd8055f7bb"
   }
 ]);
   
